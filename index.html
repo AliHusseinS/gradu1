@@ -278,56 +278,80 @@ header .spacer { flex: 1; }
 }
 .big-modal-search input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,105,92,.1); }
 
-.big-modal-body { flex: 1; overflow: auto; padding: 0; position: relative; }
+/* ===== Big Modal: Table styling محسّن (مثل منظومة الدراسات العليا) ===== */
+.big-modal-body { flex: 1; overflow: auto; padding: 0; position: relative; background: #fff; }
 .big-modal-body::-webkit-scrollbar { width: 10px; height: 10px; }
 .big-modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
 .big-modal-body::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
 .big-modal-body::-webkit-scrollbar-corner { background: var(--surface-alt); }
 
-.ysm-table-wrap { min-width: 100%; }
-#ysmTable { width: 100%; border-collapse: collapse; direction: rtl; min-width: max-content; }
-#ysmTable thead { background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); position: sticky; top: 0; z-index: 5; }
+#ysmTable { width: 100%; border-collapse: separate; border-spacing: 0; direction: rtl; min-width: max-content; }
+#ysmTable thead { background: linear-gradient(180deg, #E8F3F1 0%, #D8EBE8 100%); position: sticky; top: 0; z-index: 5; }
 #ysmTable thead th {
-  padding: 11px 14px; font-size: 12px; font-weight: 700;
-  color: var(--primary-dark); text-align: right;
+  padding: 13px 14px; font-size: 12.5px; font-weight: 800;
+  color: var(--primary-dark); text-align: center;
   border-bottom: 2px solid var(--primary-light);
-  border-left: 1px solid var(--border);
   white-space: nowrap; min-width: 110px;
 }
-#ysmTable thead th:first-child { border-left: 1px solid var(--border); }
-#ysmTable thead th:last-child { border-left: none; }
-#ysmTable thead th.col-seq { min-width: 50px; width: 50px; text-align: center; position: sticky; right: 0; background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); z-index: 6; }
-#ysmTable thead th.col-actions { min-width: 110px; width: 110px; text-align: center; position: sticky; left: 0; background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); z-index: 6; border-right: 1px solid var(--border); }
-#ysmTable tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+#ysmTable thead th.col-seq { min-width: 50px; width: 50px; position: sticky; right: 0; background: linear-gradient(180deg, #E8F3F1 0%, #D8EBE8 100%); z-index: 6; }
+#ysmTable thead th.col-name { min-width: 240px; text-align: right; }
+#ysmTable thead th.col-actions { min-width: 100px; width: 100px; position: sticky; left: 0; background: linear-gradient(180deg, #E8F3F1 0%, #D8EBE8 100%); z-index: 6; }
+
+#ysmTable tbody tr { transition: background .15s; }
 #ysmTable tbody tr:hover { background: #F7FBFB; }
-#ysmTable tbody tr:hover td.col-sticky { background: #F7FBFB; }
+#ysmTable tbody tr:hover td.col-seq, #ysmTable tbody tr:hover td.col-actions { background: #F7FBFB !important; }
 #ysmTable tbody td {
-  padding: 9px 14px; font-size: 12.5px; color: var(--text-main);
-  border-left: 1px solid var(--border);
-  white-space: nowrap; max-width: 280px; overflow: hidden; text-overflow: ellipsis;
+  padding: 11px 14px; font-size: 13px; color: var(--text-main);
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap; text-align: center;
 }
-#ysmTable tbody td:last-child { border-left: none; }
+
+/* العمود الأول (التسلسل) */
 #ysmTable tbody td.col-seq {
-  text-align: center; font-family: monospace; color: var(--text-sub); font-weight: 700;
-  background: var(--surface-alt); position: sticky; right: 0; z-index: 4;
+  font-family: monospace; color: var(--text-sub); font-weight: 700;
+  background: #F0F7F5; position: sticky; right: 0; z-index: 4;
+  border-left: 2px solid var(--border); width: 50px; min-width: 50px;
+}
+
+/* عمود الاسم (نص أكبر، محاذاة لليمين) */
+#ysmTable tbody td.col-name { font-weight: 700; text-align: right; color: var(--primary-dark); font-size: 13.5px; }
+
+/* عمود الإجراءات (sticky يساراً) */
+#ysmTable tbody td.col-actions {
+  background: #fff; position: sticky; left: 0; z-index: 4;
   border-right: 2px solid var(--border);
 }
-#ysmTable tbody td.col-actions {
-  text-align: center; background: var(--surface); position: sticky; left: 0; z-index: 4;
-  border-left: none; border-right: 1px solid var(--border);
+
+/* خلايا الـ Pills/Badges (للقسم، الجنس، الدور، إلخ) */
+.cell-pill {
+  display: inline-block; padding: 4px 12px;
+  background: var(--surface-alt); color: var(--primary-dark);
+  border: 1px solid var(--primary-light); border-radius: 50px;
+  font-size: 11.5px; font-weight: 700; min-width: 50px;
 }
-#ysmTable tbody td.col-name { font-weight: 600; min-width: 200px; }
-#ysmTable tbody td.col-id { font-family: monospace; color: var(--primary-dark); font-weight: 700; }
+.cell-pill.success { background: #E8F5E9; color: #1B5E20; border-color: #A5D6A7; }
+.cell-pill.warning { background: #FFF8E1; color: #6B5800; border-color: #FFD54F; }
+.cell-pill.info { background: #E3F2FD; color: #0D47A1; border-color: #90CAF9; }
+.cell-pill.purple { background: #F3E5F5; color: #4A148C; border-color: #CE93D8; }
+.cell-pill.danger { background: #FFEBEE; color: #B71C1C; border-color: #EF9A9A; }
+
+/* خلية المعدل بشكل مميز */
+.cell-grade { font-family: monospace; font-weight: 800; color: var(--primary); font-size: 14px; }
+
+/* خلية فارغة */
+.cell-empty { color: var(--text-muted); font-style: italic; }
 
 .ysm-view-btn {
-  display: inline-flex; align-items: center; gap: 4px;
-  background: var(--primary); color: #fff;
-  border: none; padding: 6px 12px;
+  display: inline-flex; align-items: center; gap: 5px;
+  background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+  color: #fff; border: none;
+  padding: 6px 14px;
   border-radius: 50px; cursor: pointer;
-  font-family: 'Cairo', sans-serif; font-size: 11px; font-weight: 700;
+  font-family: 'Cairo', sans-serif; font-size: 11.5px; font-weight: 700;
   transition: .15s;
+  box-shadow: 0 2px 6px rgba(0,105,92,.25);
 }
-.ysm-view-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,105,92,.3); }
+.ysm-view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,105,92,.35); }
 
 /* مؤشر التمرير الأفقي */
 .scroll-hint {
@@ -689,7 +713,7 @@ header .spacer { flex: 1; }
 // إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
 //   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
 //
-const API_URL = "https://script.google.com/macros/s/AKfycbxcAzCwLtuty2T2xutcRRCWy-08SfNkNCzohsEshqvk12PazxzBU0e_u_VoKoFdSJ_M9w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbynJegF7a_XiSWbVoYJ2rQuXlzv-46nXUZBQHfsXg1KqJ51SKeaA0INIVcaaiU2LuphkQ/exec";
 
 // لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
 const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
@@ -739,9 +763,94 @@ function buildYearCards(yearSheets) {
   });
 }
 
-// ============================================================
-// 📋 Modal: عرض طلبة سنة معينة
-// ============================================================
+// قائمة الأعمدة المراد عرضها في جدول السنة (بنفس الترتيب)
+// يأتي من الـ Backend في data.tableColumns ولكن نعيّن fallback هنا
+const DEFAULT_TABLE_COLUMNS = [
+  'التسلسل',
+  'الاسم الرباعي',
+  'الدور',
+  'المعدل',
+  'القسم',
+  'تاريخ الامر الاداري',
+  'الامر الجامعي',
+  'تاريخ الامر الجامعي',
+  'سنة التخرج',
+  'الجنس',
+  'مجموع التسلسل'
+];
+let _tableColumns = DEFAULT_TABLE_COLUMNS.slice();
+
+// تطابق مرن لأسماء الأعمدة (يحلّ مشكلة الهمزات والمسافات)
+function normalizeTextJS(s) {
+  return String(s || '')
+    .replace(/\s+/g, ' ').trim()
+    .replace(/[إأآا]/g, 'ا')
+    .replace(/[ىي]/g, 'ي')
+    .replace(/ة/g, 'ه')
+    .replace(/ؤ/g, 'و')
+    .replace(/ئ/g, 'ي');
+}
+
+// إيجاد العمود الفعلي في بيانات الطالب الذي يطابق اسماً مفترضاً
+function findActualKey(student, wantedName) {
+  if (student[wantedName] !== undefined) return wantedName;
+  const norm = normalizeTextJS(wantedName);
+  for (const k in student) {
+    if (k.charAt(0) === '_') continue;
+    if (normalizeTextJS(k) === norm) return k;
+  }
+  // مطابقة جزئية
+  for (const k in student) {
+    if (k.charAt(0) === '_') continue;
+    if (normalizeTextJS(k).indexOf(norm) >= 0 || norm.indexOf(normalizeTextJS(k)) >= 0) return k;
+  }
+  return null;
+}
+
+// تنسيق قيمة الخلية كـ pill حسب اسم العمود
+function formatCellByColumn(colName, value) {
+  const v = value == null ? '' : String(value).trim();
+  if (!v) return '<span class="cell-empty">—</span>';
+
+  const norm = normalizeTextJS(colName);
+
+  // المعدل (رقم)
+  if (norm.indexOf('معدل') >= 0 && norm.indexOf('مجموع') < 0) {
+    return '<span class="cell-grade">' + escapeHtml(v) + '</span>';
+  }
+  // الدور (الأول، الثاني، الثالث)
+  if (norm === 'الدور') {
+    let cls = 'success';
+    if (v.indexOf('ثاني') >= 0 || v === '2') cls = 'warning';
+    else if (v.indexOf('ثالث') >= 0 || v === '3') cls = 'danger';
+    return '<span class="cell-pill ' + cls + '">' + escapeHtml(v) + '</span>';
+  }
+  // الجنس
+  if (norm === 'الجنس') {
+    const cls = (v.indexOf('ذكر') >= 0 || v === 'M' || v === 'ذ') ? 'info' : 'purple';
+    return '<span class="cell-pill ' + cls + '">' + escapeHtml(v) + '</span>';
+  }
+  // القسم
+  if (norm === 'القسم' || norm.indexOf('القسم') === 0) {
+    return '<span class="cell-pill info">' + escapeHtml(v) + '</span>';
+  }
+  // سنة التخرج / تواريخ
+  if (norm.indexOf('سنه التخرج') >= 0 || norm.indexOf('سنة التخرج') >= 0) {
+    return '<span class="cell-pill">' + escapeHtml(v) + '</span>';
+  }
+  // الأمر الجامعي
+  if (norm.indexOf('الامر الجامعي') >= 0) {
+    return '<span class="cell-pill purple">' + escapeHtml(v) + '</span>';
+  }
+  // التواريخ
+  if (norm.indexOf('تاريخ') >= 0) {
+    return '<span style="font-family:monospace;color:var(--text-sub);font-size:12.5px">' + escapeHtml(v) + '</span>';
+  }
+  // الافتراضي: نص عادي
+  return escapeHtml(v);
+}
+
+
 let _currentYearSheet = null;
 let _currentYearStudents = [];
 let _currentYearColumns = [];     // أعمدة هذه السنة (تختلف بين السنوات)
@@ -751,7 +860,7 @@ function openYearModal(sheetName) {
   // فلترة الطلبة من _allStudents حسب الـ sheet
   _currentYearStudents = _allStudents.filter(function(s) { return s._sheet === sheetName; });
 
-  // أعمدة هذا الـ sheet (من الـ Backend)
+  // أعمدة هذا الـ sheet (من الـ Backend) — تُستخدم في "عرض تفاصيل الطالب" و CSV الكامل
   _currentYearColumns = (_sheetColumns && _sheetColumns[sheetName]) ? _sheetColumns[sheetName] : [];
 
   // العثور على بيانات السنة
@@ -759,18 +868,22 @@ function openYearModal(sheetName) {
   const label = ys ? ys.displayLabel : sheetName;
 
   document.getElementById('ysmTitle').textContent = '🎓 ' + label;
-  document.getElementById('ysmSubtitle').textContent = 'عدد الطلبة: ' + _currentYearStudents.length + ' • عدد الأعمدة: ' + _currentYearColumns.length;
+  document.getElementById('ysmSubtitle').textContent =
+    'عدد الطلبة: ' + _currentYearStudents.length;
   document.getElementById('ysmSearchInput').value = '';
 
   renderYearStudents(_currentYearStudents);
   document.getElementById('yearStudentsOverlay').classList.add('open');
 
-  // إظهار مؤشر التمرير الأفقي إذا كانت الأعمدة كثيرة
-  if (_currentYearColumns.length > 4) {
-    const hint = document.getElementById('scrollHint');
-    hint.classList.add('show');
-    setTimeout(function() { hint.classList.remove('show'); }, 3500);
-  }
+  // مؤشر التمرير الأفقي
+  setTimeout(function() {
+    const body = document.getElementById('ysmBody');
+    if (body && body.scrollWidth > body.clientWidth + 20) {
+      const hint = document.getElementById('scrollHint');
+      hint.classList.add('show');
+      setTimeout(function() { hint.classList.remove('show'); }, 3500);
+    }
+  }, 200);
 }
 
 function closeYearModal() {
@@ -809,34 +922,44 @@ function renderYearStudents(list) {
   table.style.display = 'table';
   empty.style.display = 'none';
 
-  // ===== بناء رؤوس الجدول ديناميكياً =====
-  // العمود الأول: تسلسل (ثابت يميناً)
-  // ثم كل أعمدة الـ sheet
-  // العمود الأخير: إجراءات (ثابت يساراً)
+  // ===== تحديد الأعمدة الفعلية الموجودة في الطالب الأول =====
+  // كل اسم عمود مطلوب نحاول إيجاد مفتاحه الفعلي في البيانات
+  const firstStudent = list[0];
+  const resolvedColumns = []; // [{ wantedName, actualKey }]
+  _tableColumns.forEach(function(wantedName) {
+    const actualKey = findActualKey(firstStudent, wantedName);
+    if (actualKey) {
+      resolvedColumns.push({ wantedName: wantedName, actualKey: actualKey });
+    } else {
+      // العمود غير موجود في هذا الـ sheet — نضيفه فارغاً (سيظهر —)
+      resolvedColumns.push({ wantedName: wantedName, actualKey: null });
+    }
+  });
+
+  // ===== بناء رؤوس الجدول =====
   let theadHtml = '<tr>';
   theadHtml += '<th class="col-seq">ت</th>';
-  _currentYearColumns.forEach(function(col) {
-    theadHtml += '<th>' + escapeHtml(col) + '</th>';
+  resolvedColumns.forEach(function(col) {
+    const isName = col.wantedName.indexOf('الاسم') >= 0;
+    theadHtml += '<th class="' + (isName ? 'col-name' : '') + '">' + escapeHtml(col.wantedName) + '</th>';
   });
   theadHtml += '<th class="col-actions">إجراءات</th>';
   theadHtml += '</tr>';
   thead.innerHTML = theadHtml;
 
   // ===== بناء صفوف الجدول =====
-  // اكتشاف أسماء أعمدة الاسم والرقم لتطبيق ستايل خاص
-  const nameColCandidates = ['الاسم الرباعي واللقب', 'الاسم الرباعي', 'الاسم', 'اسم الطالب'];
-  const idColCandidates = ['رقم الطالب', 'الرقم الامتحاني', 'الرقم الجامعي', 'التسلسل', 'ت', 'ID', 'رقم'];
-
+  let bodyHtml = '';
   list.forEach(function(s, idx) {
     let rowHtml = '<tr>';
     rowHtml += '<td class="col-seq">' + (idx + 1) + '</td>';
 
-    _currentYearColumns.forEach(function(col) {
-      const val = s[col] != null ? s[col] : '';
-      let cls = '';
-      if (nameColCandidates.indexOf(col) >= 0) cls = 'col-name';
-      else if (idColCandidates.indexOf(col) >= 0) cls = 'col-id';
-      rowHtml += '<td' + (cls ? ' class="' + cls + '"' : '') + ' title="' + escapeHtml(val) + '">' + escapeHtml(val || '—') + '</td>';
+    resolvedColumns.forEach(function(col) {
+      const isName = col.wantedName.indexOf('الاسم') >= 0;
+      const cellValue = col.actualKey ? s[col.actualKey] : '';
+      const formatted = isName
+        ? '<span style="cursor:pointer" onclick="selectStudentFromModal(' + s._row + ', \'' + escapeJs(s._sheet) + '\')">' + escapeHtml(cellValue || '—') + '</span>'
+        : formatCellByColumn(col.wantedName, cellValue);
+      rowHtml += '<td' + (isName ? ' class="col-name"' : '') + '>' + formatted + '</td>';
     });
 
     rowHtml += '<td class="col-actions">' +
@@ -845,11 +968,12 @@ function renderYearStudents(list) {
       '</button>' +
     '</td>';
     rowHtml += '</tr>';
-    tbody.innerHTML += rowHtml;
+    bodyHtml += rowHtml;
   });
+  tbody.innerHTML = bodyHtml;
 
   document.getElementById('ysmFoot').textContent =
-    '📊 إجمالي: ' + list.length + ' طالب • ' + _currentYearColumns.length + ' عمود';
+    '📊 إجمالي: ' + list.length + ' طالب • ' + resolvedColumns.length + ' عمود';
 }
 
 function filterYearStudents() {
@@ -1149,6 +1273,9 @@ function loadAllStudents() {
       _allStudents = data.students || [];
       _yearSheetsData = data.yearSheets || [];
       _sheetColumns = data.sheetColumns || {};
+      if (data.tableColumns && data.tableColumns.length > 0) {
+        _tableColumns = data.tableColumns;
+      }
 
       // بناء بطاقات السنوات
       buildYearCards(_yearSheetsData);
