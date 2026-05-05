@@ -163,53 +163,275 @@ header .spacer { flex: 1; }
 .empty-state .es-title { font-size: 16px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
 .empty-state .es-msg { font-size: 13px; }
 
-/* ===== شبكة بطاقات السنوات ===== */
-.years-container { padding: 28px 32px; }
-.years-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1.5px solid var(--border); flex-wrap: wrap; }
-.years-header h2 { font-size: 18px; font-weight: 800; color: var(--primary-dark); }
+/* ===== شبكة بطاقات السنوات (تصميم احترافي) ===== */
+.years-container { padding: 32px 32px 28px; }
+.years-header {
+  display: flex; align-items: center; gap: 14px; margin-bottom: 24px;
+  padding-bottom: 16px; border-bottom: 2px solid var(--border);
+  flex-wrap: wrap;
+}
+.years-header h2 {
+  font-size: 19px; font-weight: 800; color: var(--primary-dark);
+  display: flex; align-items: center; gap: 8px;
+}
+.years-header h2::before {
+  content: ''; width: 4px; height: 22px;
+  background: linear-gradient(180deg, var(--primary), var(--primary-dark));
+  border-radius: 2px;
+}
 .years-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; }
-.years-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+.years-stats {
+  margin-right: auto; display: flex; gap: 18px; align-items: center;
+}
+.years-stat-item {
+  display: flex; align-items: center; gap: 8px;
+  background: var(--surface-alt); padding: 6px 14px;
+  border-radius: 50px; border: 1px solid var(--border);
+  font-size: 12px; font-weight: 700; color: var(--text-sub);
+}
+.years-stat-item strong { color: var(--primary-dark); font-size: 14px; }
 
+.years-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* ===== بطاقة السنة (Premium Card) ===== */
 .year-card {
-  background: linear-gradient(135deg, #ffffff 0%, var(--surface-alt) 100%);
-  border: 2px solid var(--border);
-  border-radius: 18px;
-  padding: 22px 22px 18px;
-  cursor: pointer;
-  transition: all .25s cubic-bezier(.34,1.56,.64,1);
   position: relative;
+  background: #fff;
+  border-radius: 20px;
+  padding: 0;
+  cursor: pointer;
   overflow: hidden;
-  box-shadow: var(--shadow-sm);
+  transition: all .35s cubic-bezier(.34,1.56,.64,1);
+  box-shadow: 0 4px 18px rgba(0, 77, 64, 0.08);
+  border: 1.5px solid var(--border);
 }
-.year-card::before {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(120deg, transparent 0%, rgba(0,105,92,.06) 100%);
-  opacity: 0; transition: opacity .25s;
-}
-.year-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--primary);
-  box-shadow: var(--shadow-md);
-}
-.year-card:hover::before { opacity: 1; }
-.year-card:active { transform: translateY(-1px); }
 
-.yc-icon-wrap {
-  width: 56px; height: 56px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
-  display: flex; align-items: center; justify-content: center;
-  box-shadow: 0 6px 16px rgba(0,105,92,.30);
-  margin-bottom: 14px; font-size: 26px; color: #fff;
-  position: relative; z-index: 1;
+.year-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 18px 40px rgba(0, 77, 64, 0.18);
+  border-color: var(--primary);
 }
-.yc-title { font-size: 15px; font-weight: 800; color: var(--primary-dark); margin-bottom: 4px; line-height: 1.4; position: relative; z-index: 1; }
-.yc-year-range { font-size: 13px; color: var(--text-sub); font-weight: 600; margin-bottom: 14px; font-family: monospace; position: relative; z-index: 1; }
-.yc-stats { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
-.yc-count { display: flex; align-items: center; gap: 6px; }
-.yc-count-num { font-size: 20px; font-weight: 900; color: var(--primary); line-height: 1; }
-.yc-count-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
-.yc-arrow { color: var(--primary); transition: transform .2s; }
-.year-card:hover .yc-arrow { transform: translateX(-4px); }
+
+/* الشريط العلوي الملوّن (gradient) */
+.yc-banner {
+  position: relative;
+  height: 110px;
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 50%, #00897B 100%);
+  overflow: hidden;
+}
+
+/* تنويع الألوان حسب موقع البطاقة */
+.year-card[data-year-index="0"] .yc-banner { background: linear-gradient(135deg, #00695C 0%, #00897B 60%, #26A69A 100%); }
+.year-card[data-year-index="1"] .yc-banner { background: linear-gradient(135deg, #1565C0 0%, #1976D2 60%, #2196F3 100%); }
+.year-card[data-year-index="2"] .yc-banner { background: linear-gradient(135deg, #6A1B9A 0%, #7B1FA2 60%, #9C27B0 100%); }
+.year-card[data-year-index="3"] .yc-banner { background: linear-gradient(135deg, #BF360C 0%, #D84315 60%, #F4511E 100%); }
+.year-card[data-year-index="4"] .yc-banner { background: linear-gradient(135deg, #2E7D32 0%, #388E3C 60%, #4CAF50 100%); }
+.year-card[data-year-index="5"] .yc-banner { background: linear-gradient(135deg, #4527A0 0%, #512DA8 60%, #673AB7 100%); }
+.year-card[data-year-index="6"] .yc-banner { background: linear-gradient(135deg, #00838F 0%, #0097A7 60%, #00BCD4 100%); }
+
+/* نمط زخرفي على الشريط */
+.yc-banner::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 90% 10%, rgba(255,255,255,.18) 0%, transparent 30%),
+    radial-gradient(circle at 10% 90%, rgba(255,255,255,.12) 0%, transparent 25%),
+    radial-gradient(circle at 50% 50%, rgba(255,255,255,.08) 0%, transparent 50%);
+  pointer-events: none;
+}
+
+/* القلنسوة (graduation cap) كأيقونة كبيرة شفافة في الخلفية */
+.yc-banner::after {
+  content: '🎓';
+  position: absolute;
+  font-size: 110px;
+  bottom: -25px;
+  right: -10px;
+  opacity: .12;
+  transform: rotate(-15deg);
+  filter: grayscale(100%) brightness(2);
+  pointer-events: none;
+}
+
+/* أرقام السنة الكبيرة */
+.yc-year-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 0 22px;
+  color: #fff;
+  z-index: 2;
+}
+.yc-year-label {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: .88;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.yc-year-label::before {
+  content: '';
+  width: 18px; height: 2px;
+  background: rgba(255,255,255,.7);
+  border-radius: 2px;
+}
+.yc-year-numbers {
+  font-family: 'Cairo', monospace;
+  font-size: 28px;
+  font-weight: 900;
+  letter-spacing: 0.5px;
+  line-height: 1;
+  text-shadow: 0 2px 8px rgba(0,0,0,.18);
+}
+.yc-year-numbers .yc-dash {
+  margin: 0 6px;
+  opacity: .55;
+  font-weight: 400;
+}
+
+/* شارة "الأحدث" */
+.yc-newest-badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  background: rgba(255,255,255,.95);
+  color: var(--primary-dark);
+  font-size: 10px;
+  font-weight: 800;
+  padding: 4px 10px;
+  border-radius: 50px;
+  display: flex; align-items: center; gap: 4px;
+  box-shadow: 0 2px 6px rgba(0,0,0,.15);
+  z-index: 3;
+  letter-spacing: .3px;
+}
+.yc-newest-badge::before {
+  content: '';
+  width: 6px; height: 6px;
+  background: #43A047;
+  border-radius: 50%;
+  box-shadow: 0 0 0 3px rgba(67,160,71,.25);
+  animation: pulse-dot 1.6s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { box-shadow: 0 0 0 3px rgba(67,160,71,.25); }
+  50% { box-shadow: 0 0 0 5px rgba(67,160,71,.4); }
+}
+
+/* ===== جسم البطاقة ===== */
+.yc-body {
+  padding: 18px 22px 16px;
+}
+
+.yc-title {
+  font-size: 14.5px;
+  font-weight: 800;
+  color: var(--text-main);
+  margin-bottom: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.yc-title-icon {
+  width: 32px; height: 32px;
+  background: linear-gradient(135deg, var(--surface-alt), #fff);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 2px 6px rgba(0,77,64,.06);
+}
+
+/* صف الإحصائيات */
+.yc-stats-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 14px;
+  border-top: 1.5px dashed var(--border);
+}
+
+.yc-count-block {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.yc-count-num {
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--primary-dark);
+  line-height: 1;
+  font-family: 'Cairo', monospace;
+}
+.yc-count-label {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-weight: 600;
+  display: flex; align-items: center; gap: 4px;
+}
+.yc-count-label::before {
+  content: '👥';
+  font-size: 11px;
+}
+
+/* زر الفتح */
+.yc-open-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-alt);
+  color: var(--primary-dark);
+  border: 1.5px solid var(--border);
+  padding: 8px 14px;
+  border-radius: 50px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  transition: all .25s;
+  pointer-events: none; /* الضغط على البطاقة كلها */
+}
+.year-card:hover .yc-open-btn {
+  background: var(--primary);
+  color: #fff;
+  border-color: var(--primary);
+  transform: translateX(-3px);
+}
+.yc-open-btn svg {
+  transition: transform .25s;
+}
+.year-card:hover .yc-open-btn svg {
+  transform: translateX(-2px);
+}
+
+/* شريط التقدم البصري (نسبة عدد طلبة هذه السنة من أكبر سنة) */
+.yc-progress {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 3px;
+  background: var(--surface-alt);
+}
+.yc-progress-bar {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary), #26A69A);
+  border-radius: 0 2px 2px 0;
+  transition: width .8s cubic-bezier(.34,1.56,.64,1);
+}
+
+/* بطاقة فارغة (إذا السنة بدون طلبة) */
+.year-card.empty { opacity: .65; }
+.year-card.empty .yc-count-num { color: var(--text-muted); }
 
 /* ===== قسم بيانات الطالب المحدد ===== */
 .selected-student-section { padding: 20px 28px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
@@ -726,7 +948,7 @@ let _currentRowIndex = null;  // رقم صف الطالب في الـ Sheet
 let _currentExportType = null;// نوع التأييد المراد تصديره
 
 // ============================================================
-// 🏗️ بناء بطاقات السنوات
+// 🏗️ بناء بطاقات السنوات (تصميم احترافي)
 // ============================================================
 function buildYearCards(yearSheets) {
   const grid = document.getElementById('yearsGrid');
@@ -742,26 +964,94 @@ function buildYearCards(yearSheets) {
   empty.style.display = 'none';
   document.getElementById('yearsContainer').style.display = 'block';
 
-  yearSheets.forEach(function(ys) {
+  // حساب أكبر عدد طلبة (لشريط التقدم)
+  const maxCount = Math.max.apply(null, yearSheets.map(function(y) { return y.count || 0; })) || 1;
+  // المجموع الكلي (لإحصائيات الهيدر)
+  const totalAll = yearSheets.reduce(function(sum, y) { return sum + (y.count || 0); }, 0);
+
+  // تحديث هيدر السنوات بالإحصائيات
+  updateYearsHeader(yearSheets.length, totalAll);
+
+  // ترتيب: الأحدث أولاً (مرتبة مسبقاً من Backend لكن للتأكد)
+  yearSheets.sort(function(a, b) { return b.yearStart - a.yearStart; });
+
+  yearSheets.forEach(function(ys, idx) {
     const card = document.createElement('div');
-    card.className = 'year-card';
-    card.onclick = function() { openYearModal(ys.sheetName); };
+    card.className = 'year-card' + (ys.count === 0 ? ' empty' : '');
+    card.setAttribute('data-year-index', idx % 7); // لتنويع الألوان
+    card.onclick = function() {
+      if (ys.count > 0) openYearModal(ys.sheetName);
+      else showToast('لا توجد بيانات طلبة لهذه السنة', 'error');
+    };
+
+    const isNewest = idx === 0; // الأولى = الأحدث
+    const progressPct = maxCount > 0 ? Math.round((ys.count / maxCount) * 100) : 0;
+
     card.innerHTML =
-      '<div class="yc-icon-wrap">🎓</div>' +
-      '<div class="yc-title">الطلبة الخريجون</div>' +
-      '<div class="yc-year-range">' + escapeHtml(ys.yearStart + ' - ' + ys.yearEnd) + '</div>' +
-      '<div class="yc-stats">' +
-        '<div class="yc-count">' +
-          '<span class="yc-count-num">' + ys.count + '</span>' +
-          '<span class="yc-count-label">طالب</span>' +
+      // الشريط العلوي
+      '<div class="yc-banner">' +
+        (isNewest ? '<div class="yc-newest-badge">الأحدث</div>' : '') +
+        '<div class="yc-year-display">' +
+          '<div class="yc-year-label">السنة الدراسية</div>' +
+          '<div class="yc-year-numbers">' +
+            ys.yearStart +
+            '<span class="yc-dash">/</span>' +
+            ys.yearEnd +
+          '</div>' +
         '</div>' +
-        '<svg class="yc-arrow" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">' +
-          '<path d="M15 19l-7-7 7-7"/>' +
-        '</svg>' +
+      '</div>' +
+      // جسم البطاقة
+      '<div class="yc-body">' +
+        '<div class="yc-title">' +
+          '<div class="yc-title-icon">🎓</div>' +
+          '<span>الطلبة الخريجون</span>' +
+        '</div>' +
+        '<div class="yc-stats-row">' +
+          '<div class="yc-count-block">' +
+            '<div class="yc-count-num">' + (ys.count || 0) + '</div>' +
+            '<div class="yc-count-label">طالب وطالبة</div>' +
+          '</div>' +
+          '<div class="yc-open-btn">' +
+            'عرض القائمة' +
+            '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">' +
+              '<path d="M15 19l-7-7 7-7"/>' +
+            '</svg>' +
+          '</div>' +
+        '</div>' +
+      '</div>' +
+      // شريط التقدم
+      '<div class="yc-progress">' +
+        '<div class="yc-progress-bar" style="width:0%"></div>' +
       '</div>';
+
     grid.appendChild(card);
+
+    // أنيميشن شريط التقدم بعد لحظة
+    setTimeout(function() {
+      const bar = card.querySelector('.yc-progress-bar');
+      if (bar) bar.style.width = progressPct + '%';
+    }, 200 + (idx * 80));
   });
 }
+
+// تحديث هيدر السنوات بالإحصائيات
+function updateYearsHeader(yearsCount, totalStudents) {
+  const header = document.querySelector('.years-header');
+  if (!header) return;
+
+  // إزالة الإحصائيات القديمة إن وجدت
+  const oldStats = header.querySelector('.years-stats');
+  if (oldStats) oldStats.remove();
+
+  // إضافة إحصائيات جديدة
+  const stats = document.createElement('div');
+  stats.className = 'years-stats';
+  stats.innerHTML =
+    '<div class="years-stat-item">📅 <span>السنوات:</span> <strong>' + yearsCount + '</strong></div>' +
+    '<div class="years-stat-item">🎓 <span>إجمالي الخريجين:</span> <strong>' + totalStudents + '</strong></div>';
+  header.appendChild(stats);
+}
+
 
 // قائمة الأعمدة المراد عرضها في جدول السنة (بنفس الترتيب)
 // يأتي من الـ Backend في data.tableColumns ولكن نعيّن fallback هنا
