@@ -163,17 +163,209 @@ header .spacer { flex: 1; }
 .empty-state .es-title { font-size: 16px; font-weight: 700; color: var(--text-sub); margin-bottom: 6px; }
 .empty-state .es-msg { font-size: 13px; }
 
+/* ===== شبكة بطاقات السنوات ===== */
+.years-container { padding: 28px 32px; }
+.years-header { display: flex; align-items: baseline; gap: 14px; margin-bottom: 22px; padding-bottom: 14px; border-bottom: 1.5px solid var(--border); flex-wrap: wrap; }
+.years-header h2 { font-size: 18px; font-weight: 800; color: var(--primary-dark); }
+.years-subtitle { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+.years-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 18px; }
+
+.year-card {
+  background: linear-gradient(135deg, #ffffff 0%, var(--surface-alt) 100%);
+  border: 2px solid var(--border);
+  border-radius: 18px;
+  padding: 22px 22px 18px;
+  cursor: pointer;
+  transition: all .25s cubic-bezier(.34,1.56,.64,1);
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+.year-card::before {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 0%, rgba(0,105,92,.06) 100%);
+  opacity: 0; transition: opacity .25s;
+}
+.year-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--primary);
+  box-shadow: var(--shadow-md);
+}
+.year-card:hover::before { opacity: 1; }
+.year-card:active { transform: translateY(-1px); }
+
+.yc-icon-wrap {
+  width: 56px; height: 56px; border-radius: 14px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 6px 16px rgba(0,105,92,.30);
+  margin-bottom: 14px; font-size: 26px; color: #fff;
+  position: relative; z-index: 1;
+}
+.yc-title { font-size: 15px; font-weight: 800; color: var(--primary-dark); margin-bottom: 4px; line-height: 1.4; position: relative; z-index: 1; }
+.yc-year-range { font-size: 13px; color: var(--text-sub); font-weight: 600; margin-bottom: 14px; font-family: monospace; position: relative; z-index: 1; }
+.yc-stats { display: flex; align-items: center; justify-content: space-between; padding-top: 12px; border-top: 1px solid var(--border); position: relative; z-index: 1; }
+.yc-count { display: flex; align-items: center; gap: 6px; }
+.yc-count-num { font-size: 20px; font-weight: 900; color: var(--primary); line-height: 1; }
+.yc-count-label { font-size: 11px; color: var(--text-muted); font-weight: 600; }
+.yc-arrow { color: var(--primary); transition: transform .2s; }
+.year-card:hover .yc-arrow { transform: translateX(-4px); }
+
+/* ===== قسم بيانات الطالب المحدد ===== */
+.selected-student-section { padding: 20px 28px 24px; background: var(--surface); border-bottom: 1px solid var(--border); }
+.ss-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1.5px solid var(--border); flex-wrap: wrap; gap: 10px; }
+.ss-title { display: flex; align-items: center; gap: 14px; }
+.ss-icon { width: 48px; height: 48px; border-radius: 12px; background: linear-gradient(135deg, var(--primary), var(--primary-dark)); display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.ss-name { font-size: 16px; font-weight: 800; color: var(--primary-dark); }
+.ss-meta { font-size: 12px; color: var(--text-sub); margin-top: 2px; font-weight: 600; }
+.ss-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 10px; }
+.ss-field { background: var(--surface-alt); padding: 9px 12px; border-radius: 10px; border: 1px solid var(--border); }
+.ss-field-label { font-size: 10.5px; font-weight: 700; color: var(--text-sub); margin-bottom: 3px; }
+.ss-field-value { font-size: 13px; color: var(--text-main); font-weight: 600; word-break: break-word; min-height: 18px; }
+.ss-field-value:empty::before { content: '—'; color: var(--text-muted); }
+
+/* ===== Big Modal (طلبة السنة) ===== */
+.big-modal-overlay {
+  position: fixed; inset: 0; z-index: 8000;
+  background: rgba(0,0,0,.5);
+  backdrop-filter: blur(4px);
+  display: none;
+  align-items: center; justify-content: center;
+  padding: 20px;
+}
+.big-modal-overlay.open { display: flex; animation: fadeIn .2s ease; }
+.big-modal-box {
+  background: #fff;
+  border-radius: 20px;
+  width: 920px; max-width: 100%;
+  max-height: 88vh;
+  display: flex; flex-direction: column;
+  box-shadow: 0 24px 60px rgba(0,0,0,.3);
+  animation: popIn .25s cubic-bezier(.34,1.56,.64,1);
+  overflow: hidden;
+}
+.big-modal-head {
+  background: linear-gradient(120deg, var(--primary-dark), var(--primary), #00897B);
+  color: #fff; padding: 18px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.big-modal-head h3 { font-size: 16px; font-weight: 800; margin: 0 0 2px; }
+.big-modal-head #ysmSubtitle { font-size: 12px; opacity: .85; }
+.ysm-head-actions { display: flex; gap: 8px; align-items: center; }
+.ysm-export-csv {
+  background: rgba(255,255,255,.18); border: 1px solid rgba(255,255,255,.25);
+  color: #fff; padding: 6px 14px; border-radius: 50px;
+  cursor: pointer; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 700;
+  transition: .15s;
+}
+.ysm-export-csv:hover { background: rgba(255,255,255,.28); }
+.ysm-close {
+  background: rgba(255,255,255,.2); border: none; color: #fff;
+  width: 32px; height: 32px; border-radius: 50%;
+  cursor: pointer; font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: .15s;
+}
+.ysm-close:hover { background: rgba(229,57,53,.85); }
+
+.big-modal-search { padding: 14px 24px; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+.big-modal-search input {
+  width: 100%; padding: 10px 16px;
+  font-family: 'Cairo', sans-serif; font-size: 14px;
+  background: var(--surface-alt); border: 1.5px solid var(--border);
+  border-radius: var(--radius); transition: .2s; direction: rtl;
+}
+.big-modal-search input:focus { outline: none; border-color: var(--primary); background: #fff; box-shadow: 0 0 0 3px rgba(0,105,92,.1); }
+
+.big-modal-body { flex: 1; overflow: auto; padding: 0; position: relative; }
+.big-modal-body::-webkit-scrollbar { width: 10px; height: 10px; }
+.big-modal-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 5px; }
+.big-modal-body::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }
+.big-modal-body::-webkit-scrollbar-corner { background: var(--surface-alt); }
+
+.ysm-table-wrap { min-width: 100%; }
+#ysmTable { width: 100%; border-collapse: collapse; direction: rtl; min-width: max-content; }
+#ysmTable thead { background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); position: sticky; top: 0; z-index: 5; }
+#ysmTable thead th {
+  padding: 11px 14px; font-size: 12px; font-weight: 700;
+  color: var(--primary-dark); text-align: right;
+  border-bottom: 2px solid var(--primary-light);
+  border-left: 1px solid var(--border);
+  white-space: nowrap; min-width: 110px;
+}
+#ysmTable thead th:first-child { border-left: 1px solid var(--border); }
+#ysmTable thead th:last-child { border-left: none; }
+#ysmTable thead th.col-seq { min-width: 50px; width: 50px; text-align: center; position: sticky; right: 0; background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); z-index: 6; }
+#ysmTable thead th.col-actions { min-width: 110px; width: 110px; text-align: center; position: sticky; left: 0; background: linear-gradient(180deg, #E8F3F1 0%, #DCEBE9 100%); z-index: 6; border-right: 1px solid var(--border); }
+#ysmTable tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+#ysmTable tbody tr:hover { background: #F7FBFB; }
+#ysmTable tbody tr:hover td.col-sticky { background: #F7FBFB; }
+#ysmTable tbody td {
+  padding: 9px 14px; font-size: 12.5px; color: var(--text-main);
+  border-left: 1px solid var(--border);
+  white-space: nowrap; max-width: 280px; overflow: hidden; text-overflow: ellipsis;
+}
+#ysmTable tbody td:last-child { border-left: none; }
+#ysmTable tbody td.col-seq {
+  text-align: center; font-family: monospace; color: var(--text-sub); font-weight: 700;
+  background: var(--surface-alt); position: sticky; right: 0; z-index: 4;
+  border-right: 2px solid var(--border);
+}
+#ysmTable tbody td.col-actions {
+  text-align: center; background: var(--surface); position: sticky; left: 0; z-index: 4;
+  border-left: none; border-right: 1px solid var(--border);
+}
+#ysmTable tbody td.col-name { font-weight: 600; min-width: 200px; }
+#ysmTable tbody td.col-id { font-family: monospace; color: var(--primary-dark); font-weight: 700; }
+
+.ysm-view-btn {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: var(--primary); color: #fff;
+  border: none; padding: 6px 12px;
+  border-radius: 50px; cursor: pointer;
+  font-family: 'Cairo', sans-serif; font-size: 11px; font-weight: 700;
+  transition: .15s;
+}
+.ysm-view-btn:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,105,92,.3); }
+
+/* مؤشر التمرير الأفقي */
+.scroll-hint {
+  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
+  background: rgba(0,77,64,.85); color: #fff; padding: 4px 12px;
+  border-radius: 12px; font-size: 10.5px; font-weight: 600;
+  pointer-events: none; opacity: 0; transition: opacity .3s;
+  white-space: nowrap; z-index: 10;
+}
+.scroll-hint.show { opacity: 1; }
+
+.big-modal-foot {
+  padding: 10px 24px;
+  background: var(--surface-alt);
+  border-top: 1px solid var(--border);
+  font-size: 12px; color: var(--text-sub); font-weight: 600;
+  text-align: center; flex-shrink: 0;
+}
+
 /* ===== Responsive ===== */
 @media (max-width: 600px) {
   header { padding: 0 16px; }
   .header-badge { display: none; }
   .search-wrapper { padding: 14px 16px; flex-wrap: wrap; }
-  .section { padding: 16px 14px; }
-  .form-grid { grid-template-columns: 1fr; }
   .actions-bar { padding: 14px 16px; }
   .modal-box { width: 90vw; padding: 24px 20px; }
   .header-title { font-size: 16px; }
   .header-sub { font-size: 11px; }
+  .years-container { padding: 18px 14px; }
+  .years-grid { grid-template-columns: 1fr; gap: 12px; }
+  .selected-student-section { padding: 14px 14px 18px; }
+  .ss-grid { grid-template-columns: 1fr; }
+  .big-modal-overlay { padding: 0; }
+  .big-modal-box { max-height: 100vh; height: 100vh; border-radius: 0; }
+  #ysmTable thead th, #ysmTable tbody td { padding: 8px 10px; font-size: 12px; }
+  .ysm-view-btn { padding: 5px 10px; font-size: 10px; }
+  #userBadge .ub-info { display: none; }
+  #logoutBtn span, #logoutBtn { font-size: 11px; }
 }
 
 /* ===== شاشة تسجيل الدخول ===== */
@@ -338,18 +530,40 @@ header .spacer { flex: 1; }
   </button>
 </div>
 
-<!-- ===== التبويبات ===== -->
-<div class="tabs-container">
-  <div class="tabs" id="tabs"></div>
+<!-- ===== شبكة بطاقات السنوات ===== -->
+<div id="yearsContainer" class="years-container">
+  <div class="years-header">
+    <h2>📅 السنوات الدراسية</h2>
+    <span class="years-subtitle">اضغط على بطاقة السنة لعرض الطلبة الخريجين</span>
+  </div>
+  <div class="years-grid" id="yearsGrid">
+    <!-- يتم بناؤها ديناميكياً -->
+  </div>
 </div>
 
-<!-- ===== الأقسام ===== -->
-<div id="sections">
-  <div class="empty-state" id="emptyState">
-    <div class="es-icon">🔎</div>
-    <div class="es-title">لم يتم اختيار طالب بعد</div>
-    <div class="es-msg">ابحث عن طالب من شريط البحث في الأعلى لعرض بياناته هنا</div>
+<!-- ===== قسم بيانات الطالب المحدد (يظهر بعد اختيار طالب) ===== -->
+<div id="selectedStudentSection" class="selected-student-section" style="display:none">
+  <div class="ss-header">
+    <div class="ss-title">
+      <span class="ss-icon">🎓</span>
+      <div>
+        <div class="ss-name" id="ssName">—</div>
+        <div class="ss-meta" id="ssMeta">—</div>
+      </div>
+    </div>
+    <button class="btn btn-ghost" onclick="clearSelectedStudent()">
+      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M18 6L6 18M6 6l12 12"/></svg>
+      إلغاء التحديد
+    </button>
   </div>
+  <div class="ss-grid" id="ssGrid"></div>
+</div>
+
+<!-- Empty state عام (يظهر عند عدم وجود سنوات) -->
+<div class="empty-state" id="emptyState" style="display:none">
+  <div class="es-icon">📭</div>
+  <div class="es-title">لا توجد سنوات دراسية مسجلة</div>
+  <div class="es-msg">تأكد من وجود sheets بصيغة year2021-2022 في ملف Google Sheet</div>
 </div>
 
 <!-- ===== شريط الأزرار السفلي ===== -->
@@ -371,6 +585,39 @@ header .spacer { flex: 1; }
     <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
     تصدير تأييد تخرج / دراسات عليا
   </button>
+</div>
+
+<!-- ===== Modal: قائمة طلبة السنة (كبير) ===== -->
+<div id="yearStudentsOverlay" class="big-modal-overlay">
+  <div class="big-modal-box">
+    <div class="big-modal-head">
+      <div>
+        <h3 id="ysmTitle">طلبة السنة</h3>
+        <span id="ysmSubtitle">—</span>
+      </div>
+      <div class="ysm-head-actions">
+        <button class="ysm-export-csv" onclick="exportYearStudentsCSV()" title="تصدير قائمة Excel">
+          📥 Excel
+        </button>
+        <button class="ysm-close" onclick="closeYearModal()">✕</button>
+      </div>
+    </div>
+    <div class="big-modal-search">
+      <input type="text" id="ysmSearchInput" placeholder="🔍 ابحث بالاسم أو الرقم داخل هذه السنة..." oninput="filterYearStudents()" dir="rtl">
+    </div>
+    <div class="big-modal-body" id="ysmBody">
+      <table id="ysmTable">
+        <thead id="ysmThead"></thead>
+        <tbody id="ysmTbody"></tbody>
+      </table>
+      <div id="ysmEmpty" class="empty-state" style="display:none">
+        <div class="es-icon">📭</div>
+        <div class="es-title">لا يوجد طلبة في هذه السنة</div>
+      </div>
+      <div class="scroll-hint" id="scrollHint">↔️ اسحب يميناً ويساراً لرؤية كل الأعمدة</div>
+    </div>
+    <div class="big-modal-foot" id="ysmFoot">—</div>
+  </div>
 </div>
 
 <!-- ===== Modal تأكيد التصدير ===== -->
@@ -442,111 +689,244 @@ header .spacer { flex: 1; }
 // إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
 //   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
 //
-const API_URL = "https://script.google.com/macros/s/AKfycbz7E6ihJw5MKJXb0-DHVj_kEJe-2VJcqLrPDIJitACFRJ5BVYANduD6Mqmok53hc2On4w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbxcAzCwLtuty2T2xutcRRCWy-08SfNkNCzohsEshqvk12PazxzBU0e_u_VoKoFdSJ_M9w/exec";
 
 // لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
 const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
 
-let _allStudents = [];      // قائمة كل الطلبة (يتم تحميلها مرة واحدة)
-let _allColumns = [];       // قائمة الأعمدة (Headers) من الـ Sheet
-let _currentStudent = null; // الطالب المحدد حالياً
-let _currentRowIndex = null;// رقم صف الطالب في الـ Sheet
-let _currentExportType = null; // نوع التأييد المراد تصديره
+let _allStudents = [];        // قائمة كل الطلبة من كل السنوات
+let _yearSheetsData = [];     // بيانات السنوات (sheets)
+let _sheetColumns = {};       // أعمدة كل sheet: { sheetName: [columns...] }
+let _currentStudent = null;   // الطالب المحدد حالياً
+let _currentRowIndex = null;  // رقم صف الطالب في الـ Sheet
+let _currentExportType = null;// نوع التأييد المراد تصديره
 
 // ============================================================
-// تجميع الأعمدة في تبويبات (يتم بشكل ديناميكي)
+// 🏗️ بناء بطاقات السنوات
 // ============================================================
-function buildTabsFromColumns(columns) {
-  // نقسم الأعمدة على عدة تبويبات حسب المحتوى
-  const groups = {
-    "البيانات الأساسية": [],
-    "بيانات القبول والدراسة": [],
-    "البيانات الأكاديمية": [],
-    "بيانات التخرج": [],
-    "بيانات إضافية": []
-  };
+function buildYearCards(yearSheets) {
+  const grid = document.getElementById('yearsGrid');
+  const empty = document.getElementById('emptyState');
+  grid.innerHTML = '';
 
-  // كلمات مفتاحية لكل تبويب
-  const keywords = {
-    "البيانات الأساسية": ["اسم", "رقم الطالب", "رقم الامتحاني", "جنس", "ميلاد", "موبايل", "هاتف", "بريد", "عنوان", "محافظة", "قومية", "ديانة"],
-    "بيانات القبول والدراسة": ["قبول", "تسجيل", "مرحلة", "قسم", "فرع", "دراسة", "سنة الدراسية", "نوع الدراسة", "اساس القبول", "قناة"],
-    "البيانات الأكاديمية": ["معدل", "تقدير", "درجة", "مادة", "رسوب", "نجاح", "دور", "فصل", "كورس"],
-    "بيانات التخرج": ["تخرج", "وثيقة", "شهادة", "امر جامعي", "تاريخ التخرج", "سنة التخرج"],
-  };
+  if (!yearSheets || yearSheets.length === 0) {
+    document.getElementById('yearsContainer').style.display = 'none';
+    empty.style.display = 'block';
+    return;
+  }
 
-  columns.forEach(col => {
-    let placed = false;
-    for (const [tab, keys] of Object.entries(keywords)) {
-      if (keys.some(k => col.includes(k))) {
-        groups[tab].push(col);
-        placed = true;
-        break;
-      }
-    }
-    if (!placed) groups["بيانات إضافية"].push(col);
+  empty.style.display = 'none';
+  document.getElementById('yearsContainer').style.display = 'block';
+
+  yearSheets.forEach(function(ys) {
+    const card = document.createElement('div');
+    card.className = 'year-card';
+    card.onclick = function() { openYearModal(ys.sheetName); };
+    card.innerHTML =
+      '<div class="yc-icon-wrap">🎓</div>' +
+      '<div class="yc-title">الطلبة الخريجون</div>' +
+      '<div class="yc-year-range">' + escapeHtml(ys.yearStart + ' - ' + ys.yearEnd) + '</div>' +
+      '<div class="yc-stats">' +
+        '<div class="yc-count">' +
+          '<span class="yc-count-num">' + ys.count + '</span>' +
+          '<span class="yc-count-label">طالب</span>' +
+        '</div>' +
+        '<svg class="yc-arrow" width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">' +
+          '<path d="M15 19l-7-7 7-7"/>' +
+        '</svg>' +
+      '</div>';
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// 📋 Modal: عرض طلبة سنة معينة
+// ============================================================
+let _currentYearSheet = null;
+let _currentYearStudents = [];
+let _currentYearColumns = [];     // أعمدة هذه السنة (تختلف بين السنوات)
+
+function openYearModal(sheetName) {
+  _currentYearSheet = sheetName;
+  // فلترة الطلبة من _allStudents حسب الـ sheet
+  _currentYearStudents = _allStudents.filter(function(s) { return s._sheet === sheetName; });
+
+  // أعمدة هذا الـ sheet (من الـ Backend)
+  _currentYearColumns = (_sheetColumns && _sheetColumns[sheetName]) ? _sheetColumns[sheetName] : [];
+
+  // العثور على بيانات السنة
+  const ys = _yearSheetsData.find(function(x) { return x.sheetName === sheetName; });
+  const label = ys ? ys.displayLabel : sheetName;
+
+  document.getElementById('ysmTitle').textContent = '🎓 ' + label;
+  document.getElementById('ysmSubtitle').textContent = 'عدد الطلبة: ' + _currentYearStudents.length + ' • عدد الأعمدة: ' + _currentYearColumns.length;
+  document.getElementById('ysmSearchInput').value = '';
+
+  renderYearStudents(_currentYearStudents);
+  document.getElementById('yearStudentsOverlay').classList.add('open');
+
+  // إظهار مؤشر التمرير الأفقي إذا كانت الأعمدة كثيرة
+  if (_currentYearColumns.length > 4) {
+    const hint = document.getElementById('scrollHint');
+    hint.classList.add('show');
+    setTimeout(function() { hint.classList.remove('show'); }, 3500);
+  }
+}
+
+function closeYearModal() {
+  document.getElementById('yearStudentsOverlay').classList.remove('open');
+}
+
+// إغلاق بالضغط خارج الصندوق
+document.addEventListener('click', function(e) {
+  const overlay = document.getElementById('yearStudentsOverlay');
+  if (e.target === overlay) closeYearModal();
+});
+
+// إغلاق بـ Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeYearModal();
+  }
+});
+
+function renderYearStudents(list) {
+  const thead = document.getElementById('ysmThead');
+  const tbody = document.getElementById('ysmTbody');
+  const empty = document.getElementById('ysmEmpty');
+  const table = document.getElementById('ysmTable');
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  if (!list || list.length === 0) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('ysmFoot').textContent = 'لا توجد نتائج';
+    return;
+  }
+
+  table.style.display = 'table';
+  empty.style.display = 'none';
+
+  // ===== بناء رؤوس الجدول ديناميكياً =====
+  // العمود الأول: تسلسل (ثابت يميناً)
+  // ثم كل أعمدة الـ sheet
+  // العمود الأخير: إجراءات (ثابت يساراً)
+  let theadHtml = '<tr>';
+  theadHtml += '<th class="col-seq">ت</th>';
+  _currentYearColumns.forEach(function(col) {
+    theadHtml += '<th>' + escapeHtml(col) + '</th>';
+  });
+  theadHtml += '<th class="col-actions">إجراءات</th>';
+  theadHtml += '</tr>';
+  thead.innerHTML = theadHtml;
+
+  // ===== بناء صفوف الجدول =====
+  // اكتشاف أسماء أعمدة الاسم والرقم لتطبيق ستايل خاص
+  const nameColCandidates = ['الاسم الرباعي واللقب', 'الاسم الرباعي', 'الاسم', 'اسم الطالب'];
+  const idColCandidates = ['رقم الطالب', 'الرقم الامتحاني', 'الرقم الجامعي', 'التسلسل', 'ت', 'ID', 'رقم'];
+
+  list.forEach(function(s, idx) {
+    let rowHtml = '<tr>';
+    rowHtml += '<td class="col-seq">' + (idx + 1) + '</td>';
+
+    _currentYearColumns.forEach(function(col) {
+      const val = s[col] != null ? s[col] : '';
+      let cls = '';
+      if (nameColCandidates.indexOf(col) >= 0) cls = 'col-name';
+      else if (idColCandidates.indexOf(col) >= 0) cls = 'col-id';
+      rowHtml += '<td' + (cls ? ' class="' + cls + '"' : '') + ' title="' + escapeHtml(val) + '">' + escapeHtml(val || '—') + '</td>';
+    });
+
+    rowHtml += '<td class="col-actions">' +
+      '<button class="ysm-view-btn" onclick="selectStudentFromModal(' + s._row + ', \'' + escapeJs(s._sheet) + '\')">' +
+        '👁️ عرض' +
+      '</button>' +
+    '</td>';
+    rowHtml += '</tr>';
+    tbody.innerHTML += rowHtml;
   });
 
-  // إزالة التبويبات الفارغة
-  const result = {};
-  for (const [tab, cols] of Object.entries(groups)) {
-    if (cols.length > 0) result[tab] = cols;
-  }
-  return result;
+  document.getElementById('ysmFoot').textContent =
+    '📊 إجمالي: ' + list.length + ' طالب • ' + _currentYearColumns.length + ' عمود';
 }
 
-// ============================================================
-// بناء الواجهة (التبويبات والحقول)
-// ============================================================
-function buildUI(columns) {
-  const tabs = document.getElementById("tabs");
-  const secs = document.getElementById("sections");
-  tabs.innerHTML = "";
-  secs.innerHTML = "";
+function filterYearStudents() {
+  const q = document.getElementById('ysmSearchInput').value.trim().toLowerCase();
+  if (!q) { renderYearStudents(_currentYearStudents); return; }
 
-  const TABS = buildTabsFromColumns(columns);
-  let first = true;
+  const filtered = _currentYearStudents.filter(function(s) {
+    // البحث في الاسم والرقم وكل الحقول
+    if ((s._name || '').toLowerCase().indexOf(q) >= 0) return true;
+    if ((s._id || '').toString().toLowerCase().indexOf(q) >= 0) return true;
+    // البحث في كل أعمدة هذه السنة
+    for (let i = 0; i < _currentYearColumns.length; i++) {
+      const v = s[_currentYearColumns[i]];
+      if (v != null && String(v).toLowerCase().indexOf(q) >= 0) return true;
+    }
+    return false;
+  });
+  renderYearStudents(filtered);
+}
 
-  for (const t in TABS) {
-    const cols = TABS[t];
+function selectStudentFromModal(rowIndex, sheetName) {
+  const student = _allStudents.find(function(s) {
+    return s._row === rowIndex && s._sheet === sheetName;
+  });
+  if (!student) { showToast('لم يتم العثور على الطالب', 'error'); return; }
 
-    // زر التبويب
-    const b = document.createElement("button");
-    b.innerHTML = `${escapeHtml(t)} <span class="tab-count">${cols.length}</span>`;
-    if (first) b.classList.add("active");
-    b.onclick = () => openTab(t, b);
-    tabs.appendChild(b);
+  closeYearModal();
+  selectStudent(student);
+}
 
-    // القسم
-    const sec = document.createElement("div");
-    sec.id = "sec_" + t;
-    sec.className = "section" + (first ? " active" : "");
+// تصدير قائمة طلبة السنة كـ CSV (بكل الأعمدة)
+function exportYearStudentsCSV() {
+  if (!_currentYearStudents || _currentYearStudents.length === 0) {
+    showToast('لا توجد بيانات للتصدير', 'error');
+    return;
+  }
 
-    const hdr = document.createElement("div");
-    hdr.className = "section-header";
-    hdr.innerHTML = `<h2>${escapeHtml(t)}</h2><span class="section-count">${cols.length} حقل</span>`;
-    sec.appendChild(hdr);
+  // الأعمدة = أعمدة هذه السنة بالضبط
+  const headers = ['ت'].concat(_currentYearColumns);
 
-    const grid = document.createElement("div");
-    grid.className = "form-grid";
-    cols.forEach(c => {
-      const div = document.createElement("div");
-      div.className = "field";
-      div.innerHTML = `<label>${escapeHtml(c)}</label><input data-col="${escapeHtml(c)}" placeholder="—" readonly>`;
-      grid.appendChild(div);
+  let csv = '\uFEFF'; // BOM لدعم العربية في Excel
+  csv += headers.map(csvEscape).join(',') + '\n';
+
+  _currentYearStudents.forEach(function(s, idx) {
+    const row = [idx + 1];
+    _currentYearColumns.forEach(function(col) {
+      row.push(csvEscape(s[col] != null ? s[col] : ''));
     });
-    sec.appendChild(grid);
-    secs.appendChild(sec);
-    first = false;
-  }
+    csv += row.join(',') + '\n';
+  });
+
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'طلبة_' + (_currentYearSheet || 'export') + '.csv';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+
+  showToast('✅ تم تصدير قائمة الطلبة', 'success');
 }
 
-function openTab(id, btn) {
-  document.querySelectorAll(".section").forEach(s => s.classList.remove("active"));
-  const target = document.getElementById("sec_" + id);
-  if (target) target.classList.add("active");
-  document.querySelectorAll(".tabs button").forEach(b => b.classList.remove("active"));
-  btn.classList.add("active");
+function csvEscape(val) {
+  const s = String(val || '');
+  if (s.indexOf(',') >= 0 || s.indexOf('"') >= 0 || s.indexOf('\n') >= 0) {
+    return '"' + s.replace(/"/g, '""') + '"';
+  }
+  return s;
 }
+
+function escapeJs(str) {
+  return String(str || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+}
+
+
 
 function escapeHtml(str) {
   const div = document.createElement('div');
@@ -760,17 +1140,18 @@ function callServer(action, payload) {
 // تحميل بيانات الطلبة عند بدء التشغيل
 // ============================================================
 function loadAllStudents() {
-  document.getElementById('loadingText').textContent = "جارِ تحميل بيانات الطلبة...";
+  document.getElementById('loadingText').textContent = "جارِ تحميل بيانات الطلبة من كل السنوات...";
   callServer('getAllStudents')
     .then(data => {
       if (!data) throw new Error("لا توجد بيانات");
       if (data.error) throw new Error(data.error);
 
       _allStudents = data.students || [];
-      _allColumns = data.columns || [];
+      _yearSheetsData = data.yearSheets || [];
+      _sheetColumns = data.sheetColumns || {};
 
-      // بناء الواجهة بناءً على الأعمدة المسحوبة من الـ Sheet
-      buildUI(_allColumns);
+      // بناء بطاقات السنوات
+      buildYearCards(_yearSheetsData);
 
       // عرض العدد الكلي
       document.getElementById('totalCount').textContent = _allStudents.length;
@@ -784,13 +1165,12 @@ function loadAllStudents() {
         overlay.style.opacity = '';
       }, 500);
 
-      showToast(`✅ تم تحميل ${_allStudents.length} طالب`, "success");
+      showToast(`✅ تم تحميل ${_allStudents.length} طالب من ${_yearSheetsData.length} سنة`, "success");
     })
     .catch(err => {
       console.error('Load error:', err);
       const errMsg = String(err && err.message || err);
 
-      // رسالة مساعدة بناءً على نوع الخطأ
       let hint = '';
       if (errMsg.indexOf('Failed to fetch') >= 0 || errMsg.indexOf('NetworkError') >= 0) {
         hint = '<br><br><span style="color:#5C7A76;font-size:11px;line-height:1.7">' +
@@ -799,10 +1179,9 @@ function loadAllStudents() {
                '• الـ Web App غير منشور أو access ليس "Anyone"<br>' +
                '• إعادة نشر الـ Apps Script لازمة (Deploy → Manage deployments)' +
                '</span>';
-      } else if (errMsg.indexOf('API_URL') >= 0 || errMsg.indexOf('PUT_YOUR') >= 0) {
-        hint = '<br><br><span style="color:#5C7A76;font-size:11px;line-height:1.7">' +
-               '🔧 افتح <code>Index.html</code> وضع رابط الـ Web App في متغير <code>API_URL</code>' +
-               '</span>';
+      } else if (errMsg.indexOf('غير مصرح') >= 0) {
+        hint = '<br><br><span style="color:#5C7A76;font-size:11px">سيتم إعادتك لشاشة الدخول...</span>';
+        setTimeout(() => { clearSession(); location.reload(); }, 2000);
       }
 
       document.getElementById('loadingText').innerHTML =
@@ -842,9 +1221,11 @@ function suggestNames() {
   box.innerHTML = matches.map(s => {
     const name = highlightMatch(s._name || "—", q);
     const id = s._id || "";
-    return `<div class="suggest-item" onclick="selectStudent(${s._row})">
+    const yearLabel = s._yearLabel ? `<span style="color:#9BB5B0;font-size:11px">📅 ${escapeHtml(s._yearLabel)}</span>` : '';
+    return `<div class="suggest-item" onclick="selectStudentByRef(${s._row}, '${escapeJs(s._sheet)}')">
               <span>${name}</span>
               <span class="si-id">${escapeHtml(id)}</span>
+              ${yearLabel}
             </div>`;
   }).join('');
   box.style.display = 'block';
@@ -867,21 +1248,16 @@ document.addEventListener('click', function(e) {
 });
 
 // ============================================================
-// اختيار طالب من القائمة أو من زر البحث
+// اختيار طالب — يأخذ كائن الطالب مباشرة
 // ============================================================
-function selectStudent(rowIndex) {
-  const student = _allStudents.find(s => s._row === rowIndex);
+function selectStudent(student) {
   if (!student) { showToast("لم يتم العثور على الطالب", "error"); return; }
 
   _currentStudent = student;
-  _currentRowIndex = rowIndex;
+  _currentRowIndex = student._row;
 
-  // ملء الحقول
-  fillFields(student);
-
-  // إخفاء الـ Empty State وإظهار الأقسام
-  const empty = document.getElementById('emptyState');
-  if (empty) empty.style.display = 'none';
+  // عرض بيانات الطالب في القسم العلوي
+  showSelectedStudent(student);
 
   // إخفاء قائمة الاقتراحات
   document.getElementById('suggestions').style.display = 'none';
@@ -895,25 +1271,59 @@ function selectStudent(rowIndex) {
   });
 
   showToast(`✓ تم تحميل بيانات: ${student._name}`, "success");
+
+  // التمرير إلى قسم الطالب المحدد
+  setTimeout(() => {
+    document.getElementById('selectedStudentSection').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 100);
 }
 
-function fillFields(student) {
-  document.querySelectorAll('input[data-col]').forEach(inp => {
-    const col = inp.getAttribute('data-col');
-    inp.value = student[col] != null ? student[col] : "";
+// دالة وسيطة لاستخدامها من الـ HTML (suggestions)
+function selectStudentByRef(rowIndex, sheetName) {
+  const student = _allStudents.find(s => s._row === rowIndex && s._sheet === sheetName);
+  if (student) selectStudent(student);
+}
+
+// عرض بيانات الطالب المحدد في الواجهة
+function showSelectedStudent(student) {
+  const section = document.getElementById('selectedStudentSection');
+  const grid = document.getElementById('ssGrid');
+
+  // العنوان والميتا
+  document.getElementById('ssName').textContent = student._name || '—';
+  document.getElementById('ssMeta').textContent =
+    'رقم الطالب: ' + (student._id || '—') +
+    ' • السنة: ' + (student._yearLabel || '—');
+
+  // أعمدة هذا الطالب (حسب sheet السنة)
+  const cols = (_sheetColumns && _sheetColumns[student._sheet]) ? _sheetColumns[student._sheet] : [];
+
+  grid.innerHTML = '';
+  cols.forEach(function(col) {
+    const div = document.createElement('div');
+    div.className = 'ss-field';
+    const val = student[col] != null ? student[col] : '';
+    div.innerHTML =
+      '<div class="ss-field-label">' + escapeHtml(col) + '</div>' +
+      '<div class="ss-field-value">' + escapeHtml(val) + '</div>';
+    grid.appendChild(div);
   });
+
+  section.style.display = 'block';
 }
 
-function clearForm() {
-  document.getElementById('searchBox').value = "";
-  document.querySelectorAll('input[data-col]').forEach(inp => inp.value = "");
+function clearSelectedStudent() {
+  document.getElementById('selectedStudentSection').style.display = 'none';
+  document.getElementById('searchBox').value = '';
   _currentStudent = null;
   _currentRowIndex = null;
   ['exportGeneralBtn', 'exportServiceBtn', 'exportPostgradBtn'].forEach(id => {
     document.getElementById(id).disabled = true;
   });
-  const empty = document.getElementById('emptyState');
-  if (empty) empty.style.display = 'block';
+}
+
+function clearForm() {
+  clearSelectedStudent();
 }
 
 function searchStudent() {
@@ -932,7 +1342,7 @@ function searchStudent() {
   }
 
   if (match) {
-    selectStudent(match._row);
+    selectStudent(match);
   } else {
     showToast("لم يتم العثور على طالب مطابق", "error");
   }
