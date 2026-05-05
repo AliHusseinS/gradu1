@@ -190,20 +190,80 @@ header .spacer { flex: 1; }
 .xlft small{display:block;margin-top:4px;font-size:.7rem;color:#B2CBCA}
 .xlft small span{color:#00695C;font-weight:700}
 
-/* ===== شارة المستخدم ===== */
-#userBadge { display: none; align-items: center; gap: 10px; }
-#userBadge .ub-avatar { width: 32px; height: 32px; background: rgba(255,255,255,.2); border: 1.5px solid rgba(255,255,255,.35); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 14px; }
-#userBadge .ub-info { display: flex; flex-direction: column; line-height: 1.2; }
-#userBadge .ub-name { font-size: 13px; font-weight: 700; }
+/* ===== شارة المستخدم وزر الخروج ===== */
+#userBadge { display: none; align-items: center; gap: 8px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius-pill); padding: 4px 12px 4px 5px; }
+#userBadge.show { display: flex; }
+#userBadge .ub-avatar { width: 28px; height: 28px; background: rgba(255,255,255,.25); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+#userBadge .ub-info { display: flex; flex-direction: column; line-height: 1.15; text-align: right; }
+#userBadge .ub-name { font-size: 12px; font-weight: 700; }
 #userBadge .ub-role { font-size: 10px; opacity: .8; }
+
+#logoutBtn { display: none; align-items: center; gap: 5px; background: rgba(255,255,255,.12); border: 1px solid rgba(255,255,255,.22); border-radius: var(--radius-pill); padding: 6px 12px; color: #fff; font-family: 'Cairo', sans-serif; font-size: 12px; font-weight: 700; cursor: pointer; transition: .2s; }
+#logoutBtn.show { display: inline-flex; }
+#logoutBtn:hover { background: rgba(229,57,53,.85); border-color: rgba(229,57,53,.8); }
+
+  /* ===== ستايل شاشة تسجيل الدخول (نفس منظومة الدراسات العليا) ===== */
+  #xlo{position:fixed;inset:0;z-index:9999;background:linear-gradient(135deg,#003D33,#00695C 60%,#00897B);display:flex;align-items:center;justify-content:center}
+  .xlc{background:#fff;border-radius:24px;padding:40px 36px 28px;width:380px;max-width:94vw;box-shadow:0 32px 80px rgba(0,0,0,.35);text-align:center;animation:xlci .6s cubic-bezier(.34,1.56,.64,1)}
+  @keyframes xlci{from{opacity:0;transform:translateY(40px) scale(.93)}to{opacity:1;transform:none}}
+  .xll{width:90px;height:90px;margin:0 auto 14px;border-radius:50%;overflow:hidden;box-shadow:0 6px 20px rgba(0,105,92,.3)}
+  .xll img{width:100%;height:100%;object-fit:cover}
+  .xlc h2{color:#004D40;font-size:1.35rem;font-weight:900;margin-bottom:3px}
+  .xlc p{color:#78A098;font-size:.8rem;margin-bottom:24px}
+  .xlf{margin-bottom:14px;text-align:right}
+  .xlf label{display:block;color:#005248;font-weight:700;font-size:.8rem;margin-bottom:6px}
+  .xlf input{width:100%;padding:11px 14px;border-radius:11px;border:2px solid #D8EDEA;font-family:'Cairo',sans-serif;font-size:.9rem;background:#F5FAFA;direction:ltr;text-align:left;outline:none;transition:.2s}
+  .xlf input:focus{border-color:#00695C;background:#fff;box-shadow:0 0 0 4px rgba(0,105,92,.1)}
+  .xle{background:#FFF0F0;color:#B71C1C;border-radius:9px;padding:8px 12px;font-size:.8rem;border:1px solid #FFCDD2;display:none;margin-bottom:12px;text-align:center}
+  .xle.show{display:block}
+  .xlb{width:100%;padding:12px;border-radius:12px;border:none;cursor:pointer;background:linear-gradient(135deg,#00695C,#004D40);color:#fff;font-family:'Cairo',sans-serif;font-size:.95rem;font-weight:800;box-shadow:0 6px 20px rgba(0,105,92,.4);transition:.2s;margin-top:4px}
+  .xlb:hover{transform:translateY(-2px)}
+  .xlb:disabled{opacity:.7;cursor:not-allowed;transform:none}
+  .xld{height:1px;background:linear-gradient(90deg,transparent,#D8EDEA,transparent);margin:20px 0 16px}
+  .xlft{font-size:.73rem;color:#9BB5B0;line-height:2}
+  .xlft b{display:block;color:#00695C;font-weight:800;font-size:.8rem}
+  .xlft small{display:block;margin-top:4px;font-size:.7rem;color:#B2CBCA}
+  .xlft small span{color:#00695C;font-weight:700}
+
+  /* شاشة التحميل (تظهر بعد تسجيل الدخول) */
+  #loadOverlay{position:fixed;inset:0;z-index:9998;background:linear-gradient(135deg,#003D33,#00695C 60%,#00897B);display:none;align-items:center;justify-content:center}
+  #loadOverlay.show{display:flex}
 </style>
 
 </head>
 
 <body>
 
-<!-- ===== شاشة الترحيب / تحميل البيانات ===== -->
+<!-- ===== شاشة تسجيل الدخول ===== -->
 <div id="xlo">
+  <div class="xlc">
+    <div class="xll">
+      <img src="https://iunajaf.edu.iq/wp-content/uploads/2022/07/ku_logo_color_400x400.png" alt="شعار جامعة الكوفة" onerror="this.style.display='none'">
+    </div>
+    <h2>منظومة الدراسات الأولية</h2>
+    <p>كلية التخطيط العمراني — جامعة الكوفة</p>
+    <div class="xle" id="xle">⚠️ اسم المستخدم أو كلمة المرور غير صحيحة</div>
+    <div class="xlf">
+      <label>👤 اسم المستخدم</label>
+      <input type="text" id="xlu" placeholder="Username" autocomplete="off">
+    </div>
+    <div class="xlf">
+      <label>🔑 كلمة المرور</label>
+      <input type="password" id="xlp" placeholder="Password">
+    </div>
+    <button class="xlb" id="xlbtn" onclick="xlogin()">دخول إلى المنظومة ←</button>
+    <div class="xld"></div>
+    <div class="xlft">
+      <span style="color:#9BB5B0">Powered by </span><br>
+      <b>Eng.Ali Al-Waily</b>
+      <b>Version 1.0 </b>
+      <small>© 2025 كلية التخطيط العمراني | <span>جامعة الكوفة</span></small>
+    </div>
+  </div>
+</div>
+
+<!-- ===== شاشة تحميل البيانات (تظهر بعد تسجيل الدخول) ===== -->
+<div id="loadOverlay">
   <div class="xlc">
     <div class="xll">
       <img src="https://iunajaf.edu.iq/wp-content/uploads/2022/07/ku_logo_color_400x400.png" alt="شعار جامعة الكوفة" onerror="this.style.display='none'">
@@ -232,11 +292,29 @@ header .spacer { flex: 1; }
     <div class="header-sub">كلية التخطيط العمراني</div>
   </div>
   <div class="spacer"></div>
+
   <div class="header-badge" id="totalBadge">
     <span>👥</span>
     <span id="totalCount">—</span>
     <span>طالب</span>
   </div>
+
+  <!-- شارة المستخدم -->
+  <div id="userBadge">
+    <div class="ub-info">
+      <span class="ub-name" id="ubName">—</span>
+      <span class="ub-role" id="ubRole">—</span>
+    </div>
+    <div class="ub-avatar">👤</div>
+  </div>
+
+  <!-- زر تسجيل الخروج -->
+  <button id="logoutBtn" onclick="doLogout()" title="تسجيل الخروج">
+    <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+    </svg>
+    خروج
+  </button>
 </header>
 
 <!-- ===== شريط البحث ===== -->
@@ -336,17 +414,38 @@ header .spacer { flex: 1; }
   </div>
 </div>
 
+<!-- ===== Modal تأكيد تسجيل الخروج ===== -->
+<div id="logoutModal" class="modal-wrap">
+  <div class="modal-overlay" onclick="closeLogoutModal()"></div>
+  <div class="modal-box">
+    <div class="modal-icon">🚪</div>
+    <h3 class="modal-title">تسجيل الخروج</h3>
+    <p class="modal-msg">هل تريد تسجيل الخروج من المنظومة؟</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#E53935,#B71C1C);box-shadow:0 4px 14px rgba(229,57,53,.3)" onclick="confirmLogout()">نعم، خروج</button>
+      <button class="btn btn-ghost" onclick="closeLogoutModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
 // ============================================================
-// إعدادات عامة
+// 🔧 إعدادات الاتصال بالسيرفر — مهم جداً
 // ============================================================
-// رابط الـ Web App الخاص بـ Apps Script (يتم تحديده بعد النشر)
-// ملاحظة: عند النشر كـ Web App في Apps Script، الكود يعمل من نفس النطاق فلا حاجة لـ URL خارجي
-// نستخدم google.script.run للتواصل مع السيرفر
-const USE_GAS_RUN = true; // true = google.script.run, false = fetch إلى Web App URL
-const API_URL = "https://script.google.com/macros/s/AKfycbwDnwODp46jRzdgP3VFchHyrKaIgfsMp3zT5ZISF2yXzwog8dJJ_86m_4qHQqnYTVBwaA/exec"; // ضع هنا رابط Web App إذا كنت تريد استخدام fetch بدلاً من google.script.run
+//
+// إذا كنت تستضيف الواجهة على نطاق خارجي (مثل g.physplan.com):
+//   ✅ ضع هنا رابط الـ Web App الذي حصلت عليه من Apps Script (Deploy → Web app → URL)
+//   مثال: "https://script.google.com/macros/s/AKfycbxxxxxxxxxxxxxxx/exec"
+//
+// إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
+//   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
+//
+const API_URL = "https://script.google.com/macros/s/AKfycbwfA-pEDn5jB3Np4wvCl645zZw769SUKTc9KlCHCcyiVZdP71WGjjcapGVf6ANLqYIArw/exec";
+
+// لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
+const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
 
 let _allStudents = [];      // قائمة كل الطلبة (يتم تحميلها مرة واحدة)
 let _allColumns = [];       // قائمة الأعمدة (Headers) من الـ Sheet
@@ -463,12 +562,140 @@ function showToast(msg, type = "") {
 }
 
 // ============================================================
-// التواصل مع السيرفر — google.script.run أو fetch
+// 🔐 إدارة الجلسة (Session) — Token يُحفظ في sessionStorage
 // ============================================================
+function getToken() {
+  return sessionStorage.getItem('xlToken') || "";
+}
+
+function setSession(token, username, role) {
+  sessionStorage.setItem('xlToken', token);
+  sessionStorage.setItem('xlUser', username);
+  sessionStorage.setItem('xlRole', role || 'editor');
+}
+
+function clearSession() {
+  sessionStorage.removeItem('xlToken');
+  sessionStorage.removeItem('xlUser');
+  sessionStorage.removeItem('xlRole');
+}
+
+// ============================================================
+// 🔐 تسجيل الدخول
+// ============================================================
+function xlogin() {
+  var u = document.getElementById('xlu').value.trim();
+  var p = document.getElementById('xlp').value.trim();
+  var errEl = document.getElementById('xle');
+  var btn = document.getElementById('xlbtn');
+
+  if (!u || !p) {
+    errEl.textContent = "⚠️ يرجى إدخال اسم المستخدم وكلمة المرور";
+    errEl.classList.add('show');
+    setTimeout(function(){ errEl.classList.remove('show'); }, 3000);
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = '⏳ جارِ التحقق...';
+
+  callServer('login', { username: u, password: p })
+    .then(function(d) {
+      btn.disabled = false;
+      btn.textContent = 'دخول إلى المنظومة ←';
+
+      if (d && d.success) {
+        // حفظ Token في الجلسة
+        setSession(d.token, d.username, d.role || 'editor');
+
+        // إخفاء شاشة تسجيل الدخول وإظهار شاشة التحميل
+        var loginOverlay = document.getElementById('xlo');
+        loginOverlay.style.transition = 'opacity .4s';
+        loginOverlay.style.opacity = '0';
+        setTimeout(function(){
+          loginOverlay.style.display = 'none';
+          document.getElementById('loadOverlay').classList.add('show');
+          showUserBadge(d.username, d.role || 'editor');
+          showToast('✅ مرحباً ' + d.username, 'success');
+          // تحميل البيانات
+          loadAllStudents();
+        }, 400);
+
+      } else {
+        errEl.textContent = "⚠️ " + (d && d.error ? d.error : "بيانات غير صحيحة");
+        errEl.classList.add('show');
+        setTimeout(function(){ errEl.classList.remove('show'); }, 3000);
+      }
+    })
+    .catch(function(err) {
+      btn.disabled = false;
+      btn.textContent = 'دخول إلى المنظومة ←';
+      errEl.textContent = "❌ تعذر الاتصال بالخادم — " + (err.message || err);
+      errEl.classList.add('show');
+      setTimeout(function(){ errEl.classList.remove('show'); }, 4000);
+    });
+}
+
+// تسجيل الدخول بالضغط على Enter
+document.addEventListener('keydown', function(ev) {
+  var o = document.getElementById('xlo');
+  if (ev.key === 'Enter' && o && o.style.display !== 'none' && o.style.opacity !== '0') {
+    xlogin();
+  }
+});
+
+// ============================================================
+// 👤 شارة المستخدم وزر تسجيل الخروج
+// ============================================================
+function showUserBadge(username, role) {
+  var badge = document.getElementById('userBadge');
+  var nameEl = document.getElementById('ubName');
+  var roleEl = document.getElementById('ubRole');
+  var logoutBtn = document.getElementById('logoutBtn');
+
+  nameEl.textContent = username || 'مستخدم';
+  roleEl.textContent = role === 'admin' ? 'مدير المنظومة' : 'اداري - شعبة التخرج';
+  badge.classList.add('show');
+  logoutBtn.classList.add('show');
+}
+
+function doLogout() {
+  document.getElementById('logoutModal').classList.add('open');
+}
+
+function closeLogoutModal() {
+  document.getElementById('logoutModal').classList.remove('open');
+}
+
+function confirmLogout() {
+  closeLogoutModal();
+  clearSession();
+  location.reload();
+}
+
+// ============================================================
+// 🚀 تحقق من الجلسة عند تحميل الصفحة
+// ============================================================
+function checkSession() {
+  if (getToken()) {
+    // المستخدم مسجل دخول مسبقاً → نتحقق من الـ Token مع السيرفر
+    var savedUser = sessionStorage.getItem('xlUser') || '';
+    var savedRole = sessionStorage.getItem('xlRole') || 'editor';
+
+    document.getElementById('xlo').style.display = 'none';
+    document.getElementById('loadOverlay').classList.add('show');
+    showUserBadge(savedUser, savedRole);
+    loadAllStudents();
+  }
+  // وإلا → اترك شاشة تسجيل الدخول مرئية
+}
+
+
 function callServer(action, payload) {
   return new Promise((resolve, reject) => {
-    if (USE_GAS_RUN && typeof google !== 'undefined' && google.script && google.script.run) {
-      // وضع Apps Script (HtmlService)
+
+    // الوضع 1: نحن داخل Apps Script HtmlService → استخدم google.script.run
+    if (USE_GAS_RUN) {
       const runner = google.script.run
         .withSuccessHandler(result => {
           try {
@@ -477,22 +704,55 @@ function callServer(action, payload) {
         })
         .withFailureHandler(err => reject(err));
 
-      // استدعاء الدالة بالاسم
-      if (action === 'getAllStudents') runner.getAllStudents();
-      else if (action === 'exportPDF') runner.exportStudentPDF(payload);
+      const token = getToken();
+      if (action === 'login')                runner.doLogin(payload);
+      else if (action === 'getAllStudents')  runner.getAllStudents(token);
+      else if (action === 'exportPDF')       runner.exportStudentPDF(payload, token);
       else reject(new Error("Unknown action: " + action));
-    } else if (API_URL) {
-      // وضع Web App URL (fetch)
-      const f = new FormData();
-      f.append('action', action);
-      f.append('payload', JSON.stringify(payload || {}));
-      fetch(API_URL, { method: 'POST', body: f })
-        .then(r => r.json())
-        .then(resolve)
-        .catch(reject);
-    } else {
-      reject(new Error("لم يتم تكوين اتصال السيرفر"));
+      return;
     }
+
+    // الوضع 2: نطاق خارجي → استخدم fetch إلى Web App URL
+    if (!API_URL || API_URL.indexOf('PUT_YOUR_DEPLOYMENT_ID') >= 0) {
+      reject(new Error("لم يتم تحديد رابط الـ Web App في API_URL — يرجى تعديل ملف Index.html"));
+      return;
+    }
+
+    // استخدام GET مع query parameters لتجنّب مشاكل CORS مع Apps Script
+    let url = API_URL + '?action=' + encodeURIComponent(action);
+
+    // إرفاق الـ Token مع كل طلب (عدا login نفسه)
+    if (action !== 'login') {
+      url += '&token=' + encodeURIComponent(getToken());
+    }
+
+    if (payload) {
+      url += '&payload=' + encodeURIComponent(JSON.stringify(payload));
+    }
+
+    fetch(url, {
+      method: 'GET',
+      redirect: 'follow'
+    })
+      .then(r => {
+        if (!r.ok) throw new Error("HTTP " + r.status);
+        return r.text();
+      })
+      .then(txt => {
+        try {
+          const data = JSON.parse(txt);
+          // إذا انتهت الجلسة على السيرفر → إعادة لتسجيل الدخول
+          if (data && data.error && String(data.error).indexOf('غير مصرح') >= 0) {
+            clearSession();
+            showToast('⚠️ انتهت الجلسة — يرجى تسجيل الدخول من جديد', 'error');
+            setTimeout(() => location.reload(), 1500);
+          }
+          resolve(data);
+        } catch (e) {
+          reject(new Error("استجابة غير صالحة من السيرفر"));
+        }
+      })
+      .catch(err => reject(err));
   });
 }
 
@@ -516,17 +776,39 @@ function loadAllStudents() {
       document.getElementById('totalCount').textContent = _allStudents.length;
 
       // إخفاء شاشة التحميل
-      const overlay = document.getElementById('xlo');
+      const overlay = document.getElementById('loadOverlay');
       overlay.style.transition = 'opacity .5s';
       overlay.style.opacity = '0';
-      setTimeout(() => overlay.style.display = 'none', 500);
+      setTimeout(() => {
+        overlay.classList.remove('show');
+        overlay.style.opacity = '';
+      }, 500);
 
       showToast(`✅ تم تحميل ${_allStudents.length} طالب`, "success");
     })
     .catch(err => {
       console.error('Load error:', err);
+      const errMsg = String(err && err.message || err);
+
+      // رسالة مساعدة بناءً على نوع الخطأ
+      let hint = '';
+      if (errMsg.indexOf('Failed to fetch') >= 0 || errMsg.indexOf('NetworkError') >= 0) {
+        hint = '<br><br><span style="color:#5C7A76;font-size:11px;line-height:1.7">' +
+               '🔧 <b>الأسباب المحتملة:</b><br>' +
+               '• لم يتم تحديد <code>API_URL</code> في ملف Index.html<br>' +
+               '• الـ Web App غير منشور أو access ليس "Anyone"<br>' +
+               '• إعادة نشر الـ Apps Script لازمة (Deploy → Manage deployments)' +
+               '</span>';
+      } else if (errMsg.indexOf('API_URL') >= 0 || errMsg.indexOf('PUT_YOUR') >= 0) {
+        hint = '<br><br><span style="color:#5C7A76;font-size:11px;line-height:1.7">' +
+               '🔧 افتح <code>Index.html</code> وضع رابط الـ Web App في متغير <code>API_URL</code>' +
+               '</span>';
+      }
+
       document.getElementById('loadingText').innerHTML =
-        `<span style="color:#E53935">❌ تعذر تحميل البيانات</span><br><small style="color:#9BB5B0;font-size:12px">${escapeHtml(err.message || err)}</small>`;
+        `<span style="color:#E53935;font-weight:700">❌ تعذر تحميل البيانات</span>` +
+        `<br><small style="color:#9BB5B0;font-size:12px">${escapeHtml(errMsg)}</small>` +
+        hint;
     });
 }
 
@@ -735,10 +1017,11 @@ function closeSuccessModal() {
 }
 
 // ============================================================
-// بدء التشغيل
+// 🚀 بدء التشغيل
 // ============================================================
 window.addEventListener('load', function() {
-  setTimeout(loadAllStudents, 400);
+  // تحقق ما إذا كان المستخدم مسجل دخول مسبقاً (من الجلسة)
+  setTimeout(checkSession, 200);
 });
 </script>
 
