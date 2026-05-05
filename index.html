@@ -63,6 +63,28 @@ header {
 header .spacer { flex: 1; }
 .header-badge { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius-pill); padding: 5px 14px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
 
+/* أزرار الهيدر (قاعدة البيانات + سجل العمليات) */
+.header-btn {
+  display: inline-flex; align-items: center; gap: 7px;
+  background: rgba(255,255,255,.13);
+  border: 1px solid rgba(255,255,255,.22);
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-size: 12px; font-weight: 700;
+  padding: 7px 14px;
+  border-radius: var(--radius-pill);
+  cursor: pointer;
+  transition: .2s;
+  white-space: nowrap;
+}
+.header-btn:hover {
+  background: rgba(255,255,255,.25);
+  border-color: rgba(255,255,255,.35);
+  transform: translateY(-1px);
+}
+.header-btn-database:hover { background: rgba(33,150,243,.5); border-color: rgba(33,150,243,.7); }
+.header-btn-logs:hover     { background: rgba(126,87,194,.5); border-color: rgba(126,87,194,.7); }
+
 /* ===== شريط البحث ===== */
 .search-wrapper { background: var(--surface); border-bottom: 1px solid var(--border); padding: 18px 32px; display: flex; align-items: center; gap: 12px; position: relative; }
 .search-field { position: relative; flex: 1; max-width: 460px; }
@@ -575,15 +597,35 @@ header .spacer { flex: 1; }
 }
 .ysm-view-btn:hover { transform: translateY(-1px); box-shadow: 0 4px 10px rgba(0,105,92,.35); }
 
-/* مؤشر التمرير الأفقي */
-.scroll-hint {
-  position: absolute; bottom: 8px; left: 50%; transform: translateX(-50%);
-  background: rgba(0,77,64,.85); color: #fff; padding: 4px 12px;
-  border-radius: 12px; font-size: 10.5px; font-weight: 600;
-  pointer-events: none; opacity: 0; transition: opacity .3s;
-  white-space: nowrap; z-index: 10;
+/* ===== Log Badges (شارات أنواع العمليات في السجل) ===== */
+.log-badge {
+  display: inline-block; padding: 4px 12px;
+  border-radius: 50px; font-size: 11.5px; font-weight: 800;
+  white-space: nowrap; min-width: 80px; text-align: center;
 }
-.scroll-hint.show { opacity: 1; }
+.log-login    { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+.log-logout   { background: #FFF3E0; color: #E65100; border: 1px solid #FFB74D; }
+.log-export   { background: #E3F2FD; color: #0D47A1; border: 1px solid #90CAF9; }
+.log-failed   { background: #FFEBEE; color: #B71C1C; border: 1px solid #EF9A9A; }
+.log-clear    { background: #FCE4EC; color: #880E4F; border: 1px solid #F48FB1; }
+.log-default  { background: #F3E5F5; color: #4A148C; border: 1px solid #CE93D8; }
+
+/* صف بدل في جدول السجلات */
+#logsTable tbody tr:nth-child(even) { background: #FAFCFF; }
+#logsTable tbody tr:hover { background: #F0F4FF; }
+
+/* صف بدل في جدول قاعدة البيانات */
+#dbTable tbody tr:nth-child(even) { background: #F8FBFF; }
+#dbTable tbody tr:hover { background: #EEF5FB; }
+
+/* عمود السنة في قاعدة البيانات */
+.db-year-cell {
+  font-family: monospace; font-weight: 800;
+  background: linear-gradient(135deg, #E8F3F1, #DCEBE9);
+  color: var(--primary-dark); padding: 3px 10px;
+  border-radius: 50px; font-size: 11px;
+  display: inline-block;
+}
 
 .big-modal-foot {
   padding: 10px 24px;
@@ -597,6 +639,8 @@ header .spacer { flex: 1; }
 @media (max-width: 600px) {
   header { padding: 0 16px; }
   .header-badge { display: none; }
+  .header-btn span { display: none; }
+  .header-btn { padding: 8px 10px; }
   .search-wrapper { padding: 14px 16px; flex-wrap: wrap; }
   .actions-bar { padding: 14px 16px; }
   .modal-box { width: 90vw; padding: 24px 20px; }
@@ -612,6 +656,9 @@ header .spacer { flex: 1; }
   .ysm-view-btn { padding: 5px 10px; font-size: 10px; }
   #userBadge .ub-info { display: none; }
   #logoutBtn span, #logoutBtn { font-size: 11px; }
+  .big-modal-search { flex-direction: column !important; gap: 8px !important; }
+  .big-modal-search select, .big-modal-search input { width: 100% !important; min-width: 0 !important; }
+  .yc-year-numbers { font-size: 24px; }
 }
 
 /* ===== شاشة تسجيل الدخول ===== */
@@ -627,6 +674,30 @@ header .spacer { flex: 1; }
 .xlft b{display:block;color:#00695C;font-weight:800;font-size:.8rem}
 .xlft small{display:block;margin-top:4px;font-size:.7rem;color:#B2CBCA}
 .xlft small span{color:#00695C;font-weight:700}
+
+/* ===== أزرار الهيدر (قاعدة البيانات / سجل العمليات) ===== */
+.header-action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,255,255,.15);
+  border: 1px solid rgba(255,255,255,.25);
+  border-radius: var(--radius-pill);
+  padding: 6px 14px;
+  color: #fff;
+  font-family: 'Cairo', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all .2s;
+  white-space: nowrap;
+}
+.header-action-btn:hover {
+  background: rgba(255,255,255,.25);
+  border-color: rgba(255,255,255,.4);
+  transform: translateY(-1px);
+}
+.header-action-btn svg { flex-shrink: 0; }
 
 /* ===== شارة المستخدم وزر الخروج ===== */
 #userBadge { display: none; align-items: center; gap: 8px; background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.25); border-radius: var(--radius-pill); padding: 4px 12px 4px 5px; }
@@ -736,6 +807,44 @@ header .spacer { flex: 1; }
     <span id="totalCount">—</span>
     <span>طالب</span>
   </div>
+
+  <!-- زر قاعدة بيانات الطلاب -->
+  <button class="header-btn header-btn-database" onclick="openDatabaseModal()" title="قاعدة بيانات الطلاب">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+      <ellipse cx="12" cy="5" rx="9" ry="3"/>
+      <path d="M3 5v6c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+      <path d="M3 11v6c0 1.66 4 3 9 3s9-1.34 9-3v-6"/>
+    </svg>
+    <span>قاعدة بيانات الطلاب</span>
+  </button>
+
+  <!-- زر سجل العمليات -->
+  <button class="header-btn header-btn-logs" onclick="openLogsModal()" title="سجل العمليات">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.2">
+      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+      <rect x="9" y="3" width="6" height="4" rx="1"/>
+      <path d="M9 12h6M9 16h4"/>
+    </svg>
+    <span>سجل العمليات</span>
+  </button>
+
+  <!-- زر قاعدة بيانات الطلاب -->
+  <button id="dbBtn" class="header-action-btn" onclick="openDatabaseModal()" title="قاعدة بيانات الطلاب الكاملة" style="display:none">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <ellipse cx="12" cy="5" rx="9" ry="3"/>
+      <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+      <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+    </svg>
+    قاعدة بيانات الطلاب
+  </button>
+
+  <!-- زر سجل العمليات (admin only) -->
+  <button id="logsBtn" class="header-action-btn" onclick="openLogsModal()" title="سجل العمليات" style="display:none">
+    <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
+      <path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+    </svg>
+    سجل العمليات
+  </button>
 
   <!-- شارة المستخدم -->
   <div id="userBadge">
@@ -866,6 +975,85 @@ header .spacer { flex: 1; }
   </div>
 </div>
 
+<!-- ===== Modal: قاعدة بيانات جميع الطلبة ===== -->
+<div id="databaseOverlay" class="big-modal-overlay">
+  <div class="big-modal-box" style="width: 1100px; max-width: 98vw">
+    <div class="big-modal-head" style="background: linear-gradient(120deg, #004D40, #00695C, #00897B);">
+      <div>
+        <h3>🗃️ قاعدة بيانات الطلاب</h3>
+        <span id="dbSubtitle">—</span>
+      </div>
+      <div class="ysm-head-actions">
+        <button class="ysm-export-csv" onclick="exportDatabaseCSV()" title="تصدير القاعدة كاملة Excel">
+          📥 Excel
+        </button>
+        <button class="ysm-close" onclick="closeDatabaseModal()">✕</button>
+      </div>
+    </div>
+    <div class="big-modal-search">
+      <input type="text" id="dbSearchInput" placeholder="🔍 ابحث بالاسم، رقم الطالب، السنة، القسم..." oninput="filterDatabase()" dir="rtl">
+    </div>
+    <!-- شريط فلاتر السنوات -->
+    <div class="db-filter-bar" id="dbFilterBar"></div>
+    <div class="big-modal-body" id="dbBody">
+      <table id="dbTable">
+        <thead id="dbThead"></thead>
+        <tbody id="dbTbody"></tbody>
+      </table>
+      <div id="dbEmpty" class="empty-state" style="display:none">
+        <div class="es-icon">🔎</div>
+        <div class="es-title">لا توجد نتائج مطابقة</div>
+      </div>
+    </div>
+    <div class="big-modal-foot" id="dbFoot">—</div>
+  </div>
+</div>
+
+<!-- ===== Modal: سجل العمليات (Logs) ===== -->
+<div id="logsOverlay" class="big-modal-overlay">
+  <div class="big-modal-box" style="width: 1000px; max-width: 98vw">
+    <div class="big-modal-head" style="background: linear-gradient(120deg, #1A237E, #283593, #3949AB);">
+      <div>
+        <h3>📋 سجل العمليات</h3>
+        <span id="logsSubtitle">—</span>
+      </div>
+      <div class="ysm-head-actions">
+        <button class="ysm-export-csv" onclick="loadLogs()" title="تحديث">🔄 تحديث</button>
+        <button class="ysm-export-csv" onclick="exportLogsCSV()" title="تصدير السجلات">📥 Excel</button>
+        <button class="ysm-close" onclick="closeLogsModal()">✕</button>
+      </div>
+    </div>
+    <div class="big-modal-search" style="display:flex;gap:10px;flex-wrap:wrap">
+      <input type="text" id="logsSearchInput" placeholder="🔍 ابحث في السجلات..." oninput="filterLogs()" dir="rtl" style="flex:1;min-width:180px">
+      <select id="logsTypeFilter" onchange="filterLogs()" style="padding:10px 14px;border-radius:14px;border:1.5px solid var(--border);font-family:'Cairo',sans-serif;font-size:13px;background:var(--surface-alt);cursor:pointer">
+        <option value="">كل العمليات</option>
+        <option value="تسجيل دخول">تسجيل دخول</option>
+        <option value="محاولة دخول فاشلة">محاولات فاشلة</option>
+        <option value="تسجيل خروج">تسجيل خروج</option>
+        <option value="تصدير">عمليات التصدير</option>
+      </select>
+    </div>
+    <div class="big-modal-body" id="logsBody">
+      <div id="logsLoading" style="padding:60px;text-align:center;color:var(--text-muted);font-size:14px">⏳ جارِ التحميل...</div>
+      <table id="logsTable" class="logs-table" style="display:none">
+        <thead>
+          <tr>
+            <th style="width:50px;text-align:center">#</th>
+            <th style="width:160px">التاريخ والوقت</th>
+            <th style="width:110px">المستخدم</th>
+            <th>العملية</th>
+            <th style="width:110px">رقم الطالب</th>
+            <th>اسم الطالب</th>
+            <th>تفاصيل</th>
+          </tr>
+        </thead>
+        <tbody id="logsTbody"></tbody>
+      </table>
+    </div>
+    <div class="big-modal-foot" id="logsFoot">—</div>
+  </div>
+</div>
+
 <!-- ===== Modal تأكيد التصدير ===== -->
 <div id="confirmModal" class="modal-wrap">
   <div class="modal-overlay" onclick="closeExportModal()"></div>
@@ -921,6 +1109,109 @@ header .spacer { flex: 1; }
   </div>
 </div>
 
+<!-- ===== Modal: قاعدة بيانات الطلاب (كل الطلاب من كل السنوات) ===== -->
+<div id="databaseOverlay" class="big-modal-overlay">
+  <div class="big-modal-box" style="width:1100px">
+    <div class="big-modal-head" style="background:linear-gradient(120deg,#1565C0,#1976D2,#1E88E5)">
+      <div>
+        <h3>📚 قاعدة بيانات الطلاب</h3>
+        <span id="dbSubtitle">إجمالي الطلاب: —</span>
+      </div>
+      <div class="ysm-head-actions">
+        <button class="ysm-export-csv" onclick="exportDatabaseCSV()" title="تصدير CSV">
+          📥 Excel
+        </button>
+        <button class="ysm-close" onclick="closeDatabaseModal()">✕</button>
+      </div>
+    </div>
+    <div class="big-modal-search" style="display:flex;gap:10px;align-items:center">
+      <input type="text" id="dbSearchInput" placeholder="🔍 ابحث بالاسم، رقم الطالب، القسم، المعدل..." oninput="filterDatabase()" dir="rtl" style="flex:1">
+      <select id="dbYearFilter" onchange="filterDatabase()" style="padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;background:var(--surface-alt);border:1.5px solid var(--border);border-radius:var(--radius);outline:none;cursor:pointer;color:var(--text-main);min-width:160px">
+        <option value="">📅 كل السنوات</option>
+      </select>
+    </div>
+    <div class="big-modal-body" id="dbBody">
+      <table id="dbTable">
+        <thead id="dbThead"></thead>
+        <tbody id="dbTbody"></tbody>
+      </table>
+      <div id="dbEmpty" class="empty-state" style="display:none">
+        <div class="es-icon">📭</div>
+        <div class="es-title">لا توجد نتائج مطابقة</div>
+      </div>
+    </div>
+    <div class="big-modal-foot" id="dbFoot">—</div>
+  </div>
+</div>
+
+<!-- ===== Modal: سجل العمليات (Logs) ===== -->
+<div id="logsOverlay" class="big-modal-overlay">
+  <div class="big-modal-box" style="width:1100px">
+    <div class="big-modal-head" style="background:linear-gradient(120deg,#4527A0,#5E35B1,#7E57C2)">
+      <div>
+        <h3>📋 سجل العمليات</h3>
+        <span id="logsSubtitle">جارِ التحميل...</span>
+      </div>
+      <div class="ysm-head-actions">
+        <button class="ysm-export-csv" onclick="refreshLogs()" title="تحديث">🔄</button>
+        <button class="ysm-export-csv" id="logsClearBtn" onclick="confirmClearLogs()" title="مسح السجلات (للأدمن فقط)" style="display:none">🗑️</button>
+        <button class="ysm-export-csv" onclick="exportLogsCSV()" title="تصدير CSV">📥 Excel</button>
+        <button class="ysm-close" onclick="closeLogsModal()">✕</button>
+      </div>
+    </div>
+    <div class="big-modal-search" style="display:flex;gap:10px;align-items:center">
+      <input type="text" id="logsSearchInput" placeholder="🔍 ابحث في السجلات..." oninput="filterLogs()" dir="rtl" style="flex:1">
+      <select id="logsTypeFilter" onchange="filterLogs()" style="padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;background:var(--surface-alt);border:1.5px solid var(--border);border-radius:var(--radius);outline:none;cursor:pointer;color:var(--text-main);min-width:140px">
+        <option value="">🏷️ كل العمليات</option>
+        <option value="تسجيل دخول">تسجيل دخول</option>
+        <option value="تسجيل خروج">تسجيل خروج</option>
+        <option value="تصدير">تصدير</option>
+        <option value="محاولة دخول فاشلة">محاولات فاشلة</option>
+        <option value="مسح السجلات">مسح السجلات</option>
+      </select>
+      <select id="logsUserFilter" onchange="filterLogs()" style="padding:10px 14px;font-family:'Cairo',sans-serif;font-size:13px;background:var(--surface-alt);border:1.5px solid var(--border);border-radius:var(--radius);outline:none;cursor:pointer;color:var(--text-main);min-width:130px">
+        <option value="">👤 كل المستخدمين</option>
+      </select>
+    </div>
+    <div class="big-modal-body" id="logsBody">
+      <div id="logsLoading" style="padding:40px;text-align:center;color:var(--text-sub)">⏳ جارِ التحميل...</div>
+      <table id="logsTable" style="display:none">
+        <thead>
+          <tr>
+            <th class="col-seq">#</th>
+            <th style="min-width:160px">⏰ التاريخ والوقت</th>
+            <th style="min-width:120px">👤 المستخدم</th>
+            <th style="min-width:140px">🏷️ العملية</th>
+            <th style="min-width:100px">🆔 رقم الطالب</th>
+            <th style="min-width:200px">🎓 الطالب</th>
+            <th style="min-width:200px">📝 ملاحظات</th>
+          </tr>
+        </thead>
+        <tbody id="logsTbody"></tbody>
+      </table>
+      <div id="logsEmpty" class="empty-state" style="display:none">
+        <div class="es-icon">📭</div>
+        <div class="es-title">لا توجد سجلات</div>
+      </div>
+    </div>
+    <div class="big-modal-foot" id="logsFoot">—</div>
+  </div>
+</div>
+
+<!-- ===== Modal: تأكيد مسح السجلات ===== -->
+<div id="clearLogsModal" class="modal-wrap">
+  <div class="modal-overlay" onclick="closeClearLogsModal()"></div>
+  <div class="modal-box">
+    <div class="modal-icon">⚠️</div>
+    <h3 class="modal-title">مسح كل السجلات؟</h3>
+    <p class="modal-msg">هذا الإجراء سيمسح <strong>جميع</strong> سجلات العمليات السابقة بشكل نهائي.<br>هل أنت متأكد؟</p>
+    <div class="modal-actions">
+      <button class="btn btn-primary" style="background:linear-gradient(135deg,#E53935,#B71C1C);box-shadow:0 4px 14px rgba(229,57,53,.3)" onclick="doClearLogs()">نعم، احذف الكل</button>
+      <button class="btn btn-ghost" onclick="closeClearLogsModal()">إلغاء</button>
+    </div>
+  </div>
+</div>
+
 <div id="toast"></div>
 
 <script>
@@ -935,7 +1226,7 @@ header .spacer { flex: 1; }
 // إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
 //   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
 //
-const API_URL = "https://script.google.com/macros/s/AKfycbynJegF7a_XiSWbVoYJ2rQuXlzv-46nXUZBQHfsXg1KqJ51SKeaA0INIVcaaiU2LuphkQ/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbzkKA3iQT6Rge7q2wmjZbvFT-qZ6jqvpvH5L0OB-FXz1gkdRCueASxXFVILxS9WN9KwZg/exec";
 
 // لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
 const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
@@ -1463,9 +1754,423 @@ function closeLogoutModal() {
 
 function confirmLogout() {
   closeLogoutModal();
+  // إخبار السيرفر بتسجيل الخروج (لتسجيل العملية في الـ Logs)
+  callServer('logout').catch(function(){}); // لا تنتظر النتيجة
   clearSession();
-  location.reload();
+  setTimeout(function(){ location.reload(); }, 200);
 }
+
+// ============================================================
+// 📚 قاعدة بيانات الطلاب — Modal لكل الطلبة من كل السنوات
+// ============================================================
+let _dbFiltered = [];
+
+function openDatabaseModal() {
+  if (!_allStudents || _allStudents.length === 0) {
+    showToast('لا توجد بيانات طلبة', 'error');
+    return;
+  }
+
+  // ملء فلتر السنوات
+  const yearFilter = document.getElementById('dbYearFilter');
+  yearFilter.innerHTML = '<option value="">📅 كل السنوات (' + _allStudents.length + ')</option>';
+  _yearSheetsData.forEach(function(ys) {
+    if (ys.count > 0) {
+      yearFilter.innerHTML += '<option value="' + escapeHtml(ys.sheetName) + '">' + ys.yearStart + '-' + ys.yearEnd + ' (' + ys.count + ' طالب)</option>';
+    }
+  });
+
+  document.getElementById('dbSubtitle').textContent = 'إجمالي الطلاب: ' + _allStudents.length + ' • من ' + _yearSheetsData.length + ' سنوات';
+  document.getElementById('dbSearchInput').value = '';
+  yearFilter.value = '';
+
+  _dbFiltered = _allStudents.slice();
+  renderDatabase(_dbFiltered);
+  document.getElementById('databaseOverlay').classList.add('open');
+}
+
+function closeDatabaseModal() {
+  document.getElementById('databaseOverlay').classList.remove('open');
+}
+
+function renderDatabase(list) {
+  const thead = document.getElementById('dbThead');
+  const tbody = document.getElementById('dbTbody');
+  const empty = document.getElementById('dbEmpty');
+  const table = document.getElementById('dbTable');
+
+  thead.innerHTML = '';
+  tbody.innerHTML = '';
+
+  if (!list || list.length === 0) {
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('dbFoot').textContent = 'لا توجد نتائج';
+    return;
+  }
+
+  table.style.display = 'table';
+  empty.style.display = 'none';
+
+  // أعمدة قاعدة البيانات (مختصرة لأن الطلبة من سنوات مختلفة بأعمدة مختلفة)
+  const dbCols = ['الاسم الرباعي', 'القسم', 'الدور', 'المعدل', 'الجنس', 'سنة التخرج'];
+
+  // ===== رؤوس الجدول =====
+  let theadHtml = '<tr>';
+  theadHtml += '<th class="col-seq">ت</th>';
+  theadHtml += '<th class="col-name">الاسم الرباعي</th>';
+  theadHtml += '<th>📅 السنة</th>';
+  theadHtml += '<th>القسم</th>';
+  theadHtml += '<th>الدور</th>';
+  theadHtml += '<th>المعدل</th>';
+  theadHtml += '<th>الجنس</th>';
+  theadHtml += '<th>سنة التخرج</th>';
+  theadHtml += '<th class="col-actions">إجراءات</th>';
+  theadHtml += '</tr>';
+  thead.innerHTML = theadHtml;
+
+  // ===== صفوف الجدول =====
+  let bodyHtml = '';
+  list.forEach(function(s, idx) {
+    const nameKey = findActualKey(s, 'الاسم الرباعي');
+    const deptKey = findActualKey(s, 'القسم');
+    const roundKey = findActualKey(s, 'الدور');
+    const gradeKey = findActualKey(s, 'المعدل');
+    const genderKey = findActualKey(s, 'الجنس');
+    const gradYearKey = findActualKey(s, 'سنة التخرج');
+
+    bodyHtml += '<tr>' +
+      '<td class="col-seq">' + (idx + 1) + '</td>' +
+      '<td class="col-name"><span style="cursor:pointer" onclick="selectStudentFromDB(' + s._row + ', \'' + escapeJs(s._sheet) + '\')">' + escapeHtml((nameKey ? s[nameKey] : s._name) || '—') + '</span></td>' +
+      '<td><span class="db-year-cell">' + escapeHtml(s._yearLabel || '—') + '</span></td>' +
+      '<td>' + formatCellByColumn('القسم', deptKey ? s[deptKey] : '') + '</td>' +
+      '<td>' + formatCellByColumn('الدور', roundKey ? s[roundKey] : '') + '</td>' +
+      '<td>' + formatCellByColumn('المعدل', gradeKey ? s[gradeKey] : '') + '</td>' +
+      '<td>' + formatCellByColumn('الجنس', genderKey ? s[genderKey] : '') + '</td>' +
+      '<td>' + formatCellByColumn('سنة التخرج', gradYearKey ? s[gradYearKey] : '') + '</td>' +
+      '<td class="col-actions">' +
+        '<button class="ysm-view-btn" onclick="selectStudentFromDB(' + s._row + ', \'' + escapeJs(s._sheet) + '\')">' +
+          '👁️ عرض' +
+        '</button>' +
+      '</td>' +
+    '</tr>';
+  });
+  tbody.innerHTML = bodyHtml;
+
+  document.getElementById('dbFoot').textContent =
+    '📊 عرض: ' + list.length + ' / ' + _allStudents.length + ' طالب';
+}
+
+function filterDatabase() {
+  const q = document.getElementById('dbSearchInput').value.trim().toLowerCase();
+  const yearFilter = document.getElementById('dbYearFilter').value;
+
+  let list = _allStudents.slice();
+
+  // فلتر السنة
+  if (yearFilter) {
+    list = list.filter(function(s) { return s._sheet === yearFilter; });
+  }
+
+  // فلتر البحث
+  if (q) {
+    list = list.filter(function(s) {
+      // البحث في كل قيم الطالب
+      for (const k in s) {
+        if (k.charAt(0) === '_') continue; // تجاهل المفاتيح الداخلية
+        const v = s[k];
+        if (v != null && String(v).toLowerCase().indexOf(q) >= 0) return true;
+      }
+      // البحث في حقول داخلية مفيدة
+      if ((s._name || '').toLowerCase().indexOf(q) >= 0) return true;
+      if ((s._id || '').toString().toLowerCase().indexOf(q) >= 0) return true;
+      if ((s._yearLabel || '').toLowerCase().indexOf(q) >= 0) return true;
+      return false;
+    });
+  }
+
+  _dbFiltered = list;
+  renderDatabase(list);
+}
+
+function selectStudentFromDB(rowIndex, sheetName) {
+  const student = _allStudents.find(function(s) {
+    return s._row === rowIndex && s._sheet === sheetName;
+  });
+  if (!student) { showToast('لم يتم العثور على الطالب', 'error'); return; }
+
+  closeDatabaseModal();
+  selectStudent(student);
+}
+
+function exportDatabaseCSV() {
+  if (!_dbFiltered || _dbFiltered.length === 0) {
+    showToast('لا توجد بيانات للتصدير', 'error');
+    return;
+  }
+
+  const headers = ['ت', 'الاسم الرباعي', 'السنة', 'القسم', 'الدور', 'المعدل', 'الجنس', 'سنة التخرج', 'رقم الطالب'];
+  let csv = '\uFEFF';
+  csv += headers.map(csvEscape).join(',') + '\n';
+
+  _dbFiltered.forEach(function(s, idx) {
+    const nameKey = findActualKey(s, 'الاسم الرباعي');
+    const deptKey = findActualKey(s, 'القسم');
+    const roundKey = findActualKey(s, 'الدور');
+    const gradeKey = findActualKey(s, 'المعدل');
+    const genderKey = findActualKey(s, 'الجنس');
+    const gradYearKey = findActualKey(s, 'سنة التخرج');
+
+    const row = [
+      idx + 1,
+      csvEscape((nameKey ? s[nameKey] : s._name) || ''),
+      csvEscape(s._yearLabel || ''),
+      csvEscape(deptKey ? s[deptKey] : ''),
+      csvEscape(roundKey ? s[roundKey] : ''),
+      csvEscape(gradeKey ? s[gradeKey] : ''),
+      csvEscape(genderKey ? s[genderKey] : ''),
+      csvEscape(gradYearKey ? s[gradYearKey] : ''),
+      csvEscape(s._id || '')
+    ];
+    csv += row.join(',') + '\n';
+  });
+
+  downloadCSV(csv, 'قاعدة_بيانات_الطلاب_' + new Date().toISOString().slice(0,10) + '.csv');
+  showToast('✅ تم تصدير قاعدة البيانات', 'success');
+}
+
+function downloadCSV(csv, filename) {
+  const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+}
+
+// ============================================================
+// 📋 سجل العمليات (Logs)
+// ============================================================
+let _logsData = [];
+let _logsLoaded = false;
+
+function openLogsModal() {
+  document.getElementById('logsOverlay').classList.add('open');
+
+  // إظهار زر المسح للأدمن فقط
+  const role = sessionStorage.getItem('xlRole') || '';
+  document.getElementById('logsClearBtn').style.display = role === 'admin' ? 'inline-block' : 'none';
+
+  if (!_logsLoaded) {
+    loadLogs();
+  } else {
+    // إعادة عرض السجلات السابقة
+    renderLogs(_logsData);
+  }
+}
+
+function closeLogsModal() {
+  document.getElementById('logsOverlay').classList.remove('open');
+}
+
+function refreshLogs() {
+  _logsLoaded = false;
+  _logsData = [];
+  loadLogs();
+}
+
+function loadLogs() {
+  const loading = document.getElementById('logsLoading');
+  const table = document.getElementById('logsTable');
+  const empty = document.getElementById('logsEmpty');
+
+  loading.innerHTML = '⏳ جارِ التحميل...';
+  loading.style.display = 'block';
+  table.style.display = 'none';
+  empty.style.display = 'none';
+  document.getElementById('logsSubtitle').textContent = 'جارِ التحميل...';
+
+  callServer('getLogs')
+    .then(function(d) {
+      if (d.error) {
+        loading.innerHTML = '❌ ' + escapeHtml(d.error);
+        document.getElementById('logsSubtitle').textContent = 'خطأ';
+        return;
+      }
+      _logsLoaded = true;
+      _logsData = d.logs || [];
+
+      // ملء فلتر المستخدمين
+      const userFilter = document.getElementById('logsUserFilter');
+      const users = {};
+      _logsData.forEach(function(row) {
+        const u = row[1];
+        if (u && u !== '—') users[u] = true;
+      });
+      userFilter.innerHTML = '<option value="">👤 كل المستخدمين</option>';
+      Object.keys(users).sort().forEach(function(u) {
+        userFilter.innerHTML += '<option value="' + escapeHtml(u) + '">' + escapeHtml(u) + '</option>';
+      });
+
+      renderLogs(_logsData);
+    })
+    .catch(function(err) {
+      loading.innerHTML = '❌ تعذر التحميل: ' + escapeHtml(String(err.message || err));
+      document.getElementById('logsSubtitle').textContent = 'خطأ';
+    });
+}
+
+function getLogBadgeClass(operation) {
+  const op = String(operation || '');
+  if (op.indexOf('فاشلة') >= 0) return 'log-failed';
+  if (op.indexOf('تسجيل دخول') >= 0) return 'log-login';
+  if (op.indexOf('تسجيل خروج') >= 0) return 'log-logout';
+  if (op.indexOf('تصدير') >= 0) return 'log-export';
+  if (op.indexOf('مسح') >= 0) return 'log-clear';
+  return 'log-default';
+}
+
+function renderLogs(data) {
+  const loading = document.getElementById('logsLoading');
+  const table = document.getElementById('logsTable');
+  const empty = document.getElementById('logsEmpty');
+  const tbody = document.getElementById('logsTbody');
+
+  tbody.innerHTML = '';
+
+  if (!data || data.length === 0) {
+    loading.style.display = 'none';
+    table.style.display = 'none';
+    empty.style.display = 'block';
+    document.getElementById('logsSubtitle').textContent = 'لا توجد سجلات';
+    document.getElementById('logsFoot').textContent = '0 سجل';
+    return;
+  }
+
+  loading.style.display = 'none';
+  empty.style.display = 'none';
+  table.style.display = 'table';
+
+  let bodyHtml = '';
+  data.forEach(function(row, idx) {
+    const op = String(row[2] || '');
+    const badgeClass = getLogBadgeClass(op);
+    bodyHtml += '<tr>' +
+      '<td class="col-seq">' + (idx + 1) + '</td>' +
+      '<td style="font-family:monospace;font-size:12px;color:var(--text-sub);white-space:nowrap;text-align:center">' + escapeHtml(row[0] || '') + '</td>' +
+      '<td style="font-weight:700;text-align:center"><span style="display:inline-block;padding:3px 10px;background:var(--surface-alt);border-radius:50px;font-size:12px;color:var(--primary-dark)">' + escapeHtml(row[1] || '') + '</span></td>' +
+      '<td style="text-align:center"><span class="log-badge ' + badgeClass + '">' + escapeHtml(op) + '</span></td>' +
+      '<td style="font-family:monospace;color:var(--primary-dark);font-weight:700;text-align:center">' + escapeHtml(row[3] || '—') + '</td>' +
+      '<td style="text-align:right;padding-right:14px;font-weight:600">' + escapeHtml(row[4] || '—') + '</td>' +
+      '<td style="color:var(--text-sub);font-size:12px;text-align:right;padding-right:14px">' + escapeHtml(row[5] || '—') + '</td>' +
+    '</tr>';
+  });
+  tbody.innerHTML = bodyHtml;
+
+  document.getElementById('logsSubtitle').textContent = 'إجمالي السجلات: ' + _logsData.length;
+  document.getElementById('logsFoot').textContent = '📊 عرض: ' + data.length + ' / ' + _logsData.length + ' سجل';
+}
+
+function filterLogs() {
+  const q = document.getElementById('logsSearchInput').value.trim().toLowerCase();
+  const typeFilter = document.getElementById('logsTypeFilter').value;
+  const userFilter = document.getElementById('logsUserFilter').value;
+
+  let filtered = _logsData;
+
+  if (typeFilter) {
+    filtered = filtered.filter(function(row) {
+      return String(row[2] || '').indexOf(typeFilter) >= 0;
+    });
+  }
+  if (userFilter) {
+    filtered = filtered.filter(function(row) {
+      return String(row[1] || '') === userFilter;
+    });
+  }
+  if (q) {
+    filtered = filtered.filter(function(row) {
+      for (let i = 0; i < row.length; i++) {
+        if (String(row[i] || '').toLowerCase().indexOf(q) >= 0) return true;
+      }
+      return false;
+    });
+  }
+
+  renderLogs(filtered);
+}
+
+function exportLogsCSV() {
+  if (!_logsData || _logsData.length === 0) {
+    showToast('لا توجد سجلات للتصدير', 'error');
+    return;
+  }
+  const headers = ['ت', 'التاريخ والوقت', 'المستخدم', 'العملية', 'رقم الطالب', 'اسم الطالب', 'ملاحظات'];
+  let csv = '\uFEFF';
+  csv += headers.map(csvEscape).join(',') + '\n';
+
+  _logsData.forEach(function(row, idx) {
+    csv += [
+      idx + 1,
+      csvEscape(row[0] || ''),
+      csvEscape(row[1] || ''),
+      csvEscape(row[2] || ''),
+      csvEscape(row[3] || ''),
+      csvEscape(row[4] || ''),
+      csvEscape(row[5] || '')
+    ].join(',') + '\n';
+  });
+
+  downloadCSV(csv, 'سجل_العمليات_' + new Date().toISOString().slice(0,10) + '.csv');
+  showToast('✅ تم تصدير السجلات', 'success');
+}
+
+function confirmClearLogs() {
+  document.getElementById('clearLogsModal').classList.add('open');
+}
+
+function closeClearLogsModal() {
+  document.getElementById('clearLogsModal').classList.remove('open');
+}
+
+function doClearLogs() {
+  closeClearLogsModal();
+  showToast('⏳ جارِ المسح...', '');
+
+  callServer('clearLogs')
+    .then(function(d) {
+      if (d.error) {
+        showToast('❌ ' + d.error, 'error');
+        return;
+      }
+      showToast('✅ تم مسح السجلات', 'success');
+      refreshLogs();
+    })
+    .catch(function(err) {
+      showToast('❌ تعذر المسح: ' + (err.message || err), 'error');
+    });
+}
+
+// إغلاق Modals بـ Escape
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') {
+    closeDatabaseModal();
+    closeLogsModal();
+    closeClearLogsModal();
+  }
+});
+
+// إغلاق بالضغط خارج الصندوق
+document.addEventListener('click', function(e) {
+  const dbOverlay = document.getElementById('databaseOverlay');
+  const logsOverlay = document.getElementById('logsOverlay');
+  if (e.target === dbOverlay) closeDatabaseModal();
+  if (e.target === logsOverlay) closeLogsModal();
+});
+
 
 // ============================================================
 // 🚀 تحقق من الجلسة عند تحميل الصفحة
