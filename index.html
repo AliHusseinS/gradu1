@@ -346,7 +346,7 @@ header .spacer { flex: 1; }
 // ملاحظة: عند النشر كـ Web App في Apps Script، الكود يعمل من نفس النطاق فلا حاجة لـ URL خارجي
 // نستخدم google.script.run للتواصل مع السيرفر
 const USE_GAS_RUN = true; // true = google.script.run, false = fetch إلى Web App URL
-const API_URL = ""; // ضع هنا رابط Web App إذا كنت تريد استخدام fetch بدلاً من google.script.run
+const API_URL = "https://script.google.com/macros/s/AKfycbwDnwODp46jRzdgP3VFchHyrKaIgfsMp3zT5ZISF2yXzwog8dJJ_86m_4qHQqnYTVBwaA/exec"; // ضع هنا رابط Web App إذا كنت تريد استخدام fetch بدلاً من google.script.run
 
 let _allStudents = [];      // قائمة كل الطلبة (يتم تحميلها مرة واحدة)
 let _allColumns = [];       // قائمة الأعمدة (Headers) من الـ Sheet
