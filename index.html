@@ -1246,7 +1246,7 @@ header .spacer { flex: 1; }
 // إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
 //   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
 //
-const API_URL = "https://script.google.com/macros/s/AKfycbzsTRZCy_TjH23FY3_tWMsPlenmYWIeaC7o6-fbVGoyYFaC7jBckekhn7IagK9IX8r3UA/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbwQ3Cvnry6zAGjNXrqMBAZJ6YUOGVy9njVdFBS5aWhOTp4LidrEZyPSPFpaYs-Kc8nLrg/exec";
 
 // لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
 const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
@@ -2438,12 +2438,8 @@ function showSelectedStudent(student) {
     ' • السنة: ' + (student._yearLabel || '—');
 
   // أعمدة هذا الطالب (حسب sheet السنة)
-const displayColumns = [
-  'التسلسل', 'الاسم الرباعي', 'الدور', 'المعدل', 'القسم',
-  'تاريخ الامر الإداري', 'الامر الجامعي', 'تاريخ الامر الجامعي',
-  'سنة التخرج', 'الجنس', 'مجموع التسلسل'
-];
-const cols = displayColumns;
+  const cols = (_sheetColumns && _sheetColumns[student._sheet]) ? _sheetColumns[student._sheet] : [];
+
   grid.innerHTML = '';
   cols.forEach(function(col) {
     const div = document.createElement('div');
