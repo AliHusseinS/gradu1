@@ -1054,15 +1054,35 @@ header .spacer { flex: 1; }
   </div>
 </div>
 
-<!-- ===== Modal تأكيد التصدير ===== -->
+<!-- ===== Modal تأكيد التصدير (مع حقل عنوان التأييد) ===== -->
 <div id="confirmModal" class="modal-wrap">
   <div class="modal-overlay" onclick="closeExportModal()"></div>
-  <div class="modal-box">
+  <div class="modal-box" style="max-width:480px">
     <div class="modal-icon" id="modalIcon">📄</div>
     <h3 class="modal-title" id="modalTitle">تصدير التأييد</h3>
-    <p class="modal-msg">هل تريد تصدير التأييد للطالب<br><strong id="modalStudentName"></strong> ؟</p>
+    <p class="modal-msg">تصدير التأييد للطالب<br><strong id="modalStudentName"></strong></p>
+    
+    <!-- حقل عنوان التأييد -->
+    <div style="text-align:right; margin-bottom:20px;">
+      <label style="display:block; font-size:13px; font-weight:700; color:var(--text-sub); margin-bottom:8px;">
+        📝 عنوان التأييد <span style="color:var(--danger)">*</span>
+      </label>
+      <input 
+        type="text" 
+        id="exportTitleInput" 
+        placeholder="مثال: دائرة التربية في محافظة النجف الأشرف"
+        style="width:100%; padding:12px 14px; font-family:'Cairo',sans-serif; font-size:14px; color:var(--text-main); background:var(--surface-alt); border:1.5px solid var(--border); border-radius:var(--radius); transition:all .2s; direction:rtl;"
+        onfocus="this.style.borderColor='var(--primary)'; this.style.boxShadow='0 0 0 3px rgba(0,105,92,.1)'; this.style.background='#fff'"
+        onblur="this.style.borderColor='var(--border)'; this.style.boxShadow='none'; this.style.background='var(--surface-alt)'"
+        onkeypress="if(event.key==='Enter') doExport();"
+      />
+      <div style="font-size:11px; color:var(--text-muted); margin-top:6px; display:flex; align-items:center; gap:4px;">
+        💡 سيتم وضع هذا العنوان بعد كلمة "إلى/" في التأييد
+      </div>
+    </div>
+    
     <div class="modal-actions">
-      <button class="btn btn-primary" id="modalConfirmBtn" onclick="doExport()">نعم، تصدير</button>
+      <button class="btn btn-primary" id="modalConfirmBtn" onclick="doExport()">✅ تصدير</button>
       <button class="btn btn-ghost" onclick="closeExportModal()">إلغاء</button>
     </div>
   </div>
@@ -2506,7 +2526,14 @@ function confirmExport(type) {
   document.getElementById('modalTitle').textContent = cfg.title;
   document.getElementById('modalStudentName').textContent = _currentStudent._name || "—";
 
+  // تفريغ حقل العنوان
+  const titleInput = document.getElementById('exportTitleInput');
+  titleInput.value = '';
+
   document.getElementById('confirmModal').classList.add('open');
+
+  // التركيز على حقل العنوان
+  setTimeout(function() { titleInput.focus(); }, 300);
 }
 
 function closeExportModal() {
@@ -2514,10 +2541,25 @@ function closeExportModal() {
 }
 
 function doExport() {
-  closeExportModal();
   if (!_currentStudent || !_currentExportType) return;
 
+  // التحقق من عنوان التأييد
+  const titleInput = document.getElementById('exportTitleInput');
+  const titleValue = titleInput.value.trim();
+  
+  if (!titleValue) {
+    titleInput.style.borderColor = 'var(--danger)';
+    titleInput.style.boxShadow = '0 0 0 3px rgba(229,57,53,.15)';
+    titleInput.focus();
+    showToast("⚠️ يرجى إدخال عنوان التأييد", "error");
+    return;
+  }
+
+  closeExportModal();
   document.getElementById('exportingModal').classList.add('open');
+
+  // إضافة العنوان لبيانات الطالب
+  _currentStudent['_عنوان_التأييد'] = titleValue;
 
   const payload = {
     rowIndex: _currentRowIndex,
@@ -2534,7 +2576,7 @@ function doExport() {
       }
       // إظهار Modal النجاح مع رابط التنزيل
       document.getElementById('successStudentName').textContent = _currentStudent._name || "—";
-      document.getElementById('downloadLink').href = data.url || "#";
+      document.getElementById('downloadLink').href = data.downloadUrl || data.url || "#";
       document.getElementById('successModal').classList.add('open');
     })
     .catch(err => {
