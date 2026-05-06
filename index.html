@@ -2438,8 +2438,12 @@ function showSelectedStudent(student) {
     ' • السنة: ' + (student._yearLabel || '—');
 
   // أعمدة هذا الطالب (حسب sheet السنة)
-  const cols = (_sheetColumns && _sheetColumns[student._sheet]) ? _sheetColumns[student._sheet] : [];
-
+const displayColumns = [
+  'التسلسل', 'الاسم الرباعي', 'الدور', 'المعدل', 'القسم',
+  'تاريخ الامر الإداري', 'الامر الجامعي', 'تاريخ الامر الجامعي',
+  'سنة التخرج', 'الجنس', 'مجموع التسلسل'
+];
+const cols = displayColumns;
   grid.innerHTML = '';
   cols.forEach(function(col) {
     const div = document.createElement('div');
