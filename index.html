@@ -1246,7 +1246,7 @@ header .spacer { flex: 1; }
 // إذا كنت تفتح المنظومة من خلال رابط Apps Script مباشرة:
 //   ✅ اتركه فارغاً "" — وسيستخدم google.script.run تلقائياً
 //
-const API_URL = "https://script.google.com/macros/s/AKfycbxVp5GxZAgKfQZaoXEyYj5B8q7iQQLVTc8J5VjBDqOqNl9sRSyywUI1pVIh-4bK6kr42w/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycbz0bKC2WphpE11PfljfqQIT2Tx3TbjjvKmWARRR0q3XF67mbUpkoHn4mA2suT3YursujQ/exec";
 
 // لا تغيّر هذا — يكتشف تلقائياً ما هو الوضع المناسب
 const USE_GAS_RUN = (typeof google !== 'undefined' && google.script && google.script.run);
@@ -2446,12 +2446,14 @@ function showSelectedStudent(student) {
     div.className = 'ss-field';
     let val = student[col] != null ? student[col] : '';
     
-    // تنسيق التواريخ
-    if (typeof val === 'string' && val.match(/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/)) {
-      const d = new Date(val);
-      val = d.getFullYear() + '/' + 
-            String(d.getMonth() + 1).padStart(2, '0') + '/' + 
-            String(d.getDate()).padStart(2, '0');
+    // تنسيق التواريخ ISO فقط
+    if (typeof val === 'string' && val.indexOf('T') > 0 && val.indexOf('Z') > 0) {
+      try {
+        const d = new Date(val);
+        val = d.getFullYear() + '/' + 
+              ('0' + (d.getMonth() + 1)).slice(-2) + '/' + 
+              ('0' + d.getDate()).slice(-2);
+      } catch(e) {}
     }
     
     div.innerHTML =
